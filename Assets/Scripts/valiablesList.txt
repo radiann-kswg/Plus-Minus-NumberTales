@@ -1,0 +1,69 @@
+/* GameDirector.cs …ゲームの進行などの処理 */
+[SerializeField] Text scoreText;
+// スコアを表示するTextオブジェクト
+[SerializeField] Text levelText;
+// レベルを表示するTextオブジェクト
+[SerializeField] List<Sprite> numImage;
+/* 数字の画像(Sprite)
+ * [画像リスト番号] = [数字の値] + 9
+ * ReturnNumImageIndex(int)関数で変換できます
+ */
+[SerializeField] velt vl;
+// Sliderの参照
+public int Score = 0; // スコア
+public int Level = 1; // レベル
+int leftChainNum = 0, rightChainNum = 0;
+// 連鎖数(「±5」が連続で表示している回数：3回連続表示でランダムに変化)
+[SerializeField] int fiveScore = 200, plusMinusFiveScore = 2000;
+// 「±5」を表示した時の得点
+[SerializeField] int levelDist = 5000;
+// レベルアップの条件スコア
+bool isHolded = false; // ホールドされているか
+int nowNum; // 現在流れている数字
+int nextNum; // 次に控えている数字
+int leftNum; // 左に表示されている数字
+int rightNum; // 右に表示されている数字
+int holdNum; // ホールドされている数字
+[SerializeField] Image nowNumImage;
+// 現在流れている数字を表示している画像
+[SerializeField] Image nextNumImage;
+// 次に流れている数字を表示している画像
+[SerializeField] Image leftNumImage;
+// 左で数字を表示している画像
+[SerializeField] Image rightNumImage;
+// 右で数字を表示している画像
+[SerializeField] Image holdNumImage;
+// ホールドした数字を表示している画像
+bool isGameOver = false; // ゲームオーバーフラグ
+[SerializeField] string resultSceneName; // リザルト画面のシーン名
+
+/* GameController.cs …キー入力などの処理 */
+[SerializeField] GameDirector director;
+// ゲームディレクターの参照
+[SerializeField] switching sw;
+// スイッチ(切り替え器)用スクリプトの参照
+[SerializeField] velt vl;
+// Sliderの参照
+
+/* velt.cs …数字を流すSliderの処理 */
+[SerializeField] GameDirector director;
+// ゲームディレクターの参照
+[SerializeField] switching sw;
+// スイッチ(切り替え器)用スクリプトの参照
+public Slider slider;
+// 動かすSliderオブジェクト
+[SerializeField] public float velocity = 0.25f;
+// 数字が流れる速度（1秒でSliderが進む割合）
+float value = 1.00f;
+// Sliderのvalue値（処理用）
+
+/* switching.cs …左右を切り返す処理 */
+[SerializeField] GameObject leftSwitch;
+// 左に切り替えたときに表示するオブジェクト
+[SerializeField] GameObject rightSwitch;
+// 右に切り替えたときに表示するオブジェクト
+public bool isRight = false;
+// 右に切り替えているかどうか（false：左, true：右）
+
+/* SceneSwitcher.cs …タイトル/リザルト画面でシーン切り替えを行う処理 */
+[SerializeField] string nextSceneName; // 次の画面のシーン名
