@@ -70,7 +70,7 @@ public class GameDirector : MonoBehaviour
         Target_Num = Target_Num ==  0 ? 1 : Target_Num;
         Target_Num = Target_Num >= 10 ? 9 : Target_Num;
 
-        Messerger.instance.TargetNumMessage = Target_Num;//後でStageSelectに移植
+        Target_Num = Messerger.instance.TargetNumMessage;
 
         targetImage_minus.sprite = numImage[ReturnNumImageIndex(-Target_Num)] = targetNumImage[ReturnNumImageIndex(-Target_Num)];
         targetImage_plus.sprite  = numImage[ReturnNumImageIndex( Target_Num)] = targetNumImage[ReturnNumImageIndex( Target_Num)];
