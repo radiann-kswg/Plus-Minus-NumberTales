@@ -40,7 +40,10 @@ public class GameDirector : MonoBehaviour
     bool isFirstHolded = false, isHolded = false;
     int holdNum = 0;
     [SerializeField]
-    Image nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage;
+    Image nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage, targetImage_plus, targetImage_minus;
+
+    [SerializeField]
+    Image characterDispImage;
 
     [SerializeField]
     Sprite plusBubbleImage, minusBubbleImage;
@@ -67,8 +70,12 @@ public class GameDirector : MonoBehaviour
         Target_Num = Target_Num ==  0 ? 1 : Target_Num;
         Target_Num = Target_Num >= 10 ? 9 : Target_Num;
 
-        numImage[ReturnNumImageIndex(-Target_Num)] = targetNumImage[ReturnNumImageIndex(-Target_Num)];
-        numImage[ReturnNumImageIndex( Target_Num)] = targetNumImage[ReturnNumImageIndex( Target_Num)];
+        Messerger.instance.TargetNumMessage = Target_Num;//後でStageSelectに移植
+
+        targetImage_minus.sprite = numImage[ReturnNumImageIndex(-Target_Num)] = targetNumImage[ReturnNumImageIndex(-Target_Num)];
+        targetImage_plus.sprite  = numImage[ReturnNumImageIndex( Target_Num)] = targetNumImage[ReturnNumImageIndex( Target_Num)];
+
+        characterDispImage.sprite = Messerger.instance.charactersImage[Target_Num];
 
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
@@ -93,8 +100,8 @@ public class GameDirector : MonoBehaviour
         else
         {
             /* ゲームオーバー(リザルト画面へ) */
-            ScoreManager.instance.ScoreMessage = Score;
-            ScoreManager.instance.LevelMessage = Level;
+            Messerger.instance.ScoreMessage = Score;
+            Messerger.instance.LevelMessage = Level;
             SceneManager.LoadScene(resultSceneName);
         }
     }
@@ -264,7 +271,7 @@ public class GameDirector : MonoBehaviour
 
     bool isPlusMinusFive()
     {
-        return leftNum * rightNum == sqareTarget;
+        return leftNum * rightNum == -sqareTarget;
     }
 
     public void HoldNum()
