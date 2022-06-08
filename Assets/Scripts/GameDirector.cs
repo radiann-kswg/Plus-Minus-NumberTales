@@ -11,9 +11,13 @@ public class GameDirector : MonoBehaviour
     Text scoreText, levelText;
     [SerializeField]
     List<Sprite> numImage = new List<Sprite>();
+    [SerializeField]
+    List<Sprite> targetNumImage = new List<Sprite>();
 
     [SerializeField]
     velt vl;
+
+    public int Target_Num = 5;//目標値(デフォルト:5)
 
     public int Score = 0, Level = 1;
     int leftChainNum = 0, rightChainNum = 0;
@@ -21,7 +25,7 @@ public class GameDirector : MonoBehaviour
     [SerializeField]
     int fiveScore = 200, plusMinusFiveScore = 2000, levelDist = 5000, bubbleScore = 50;
 
-    [SerializeField]
+    //[SerializeField]
     float random_Num;//大きさ
 
     [SerializeField]
@@ -31,10 +35,15 @@ public class GameDirector : MonoBehaviour
     bool isBubbling = true;
 
     int nowNum, nextNum, leftNum = 0, rightNum = 0;
+
+    int sqareTarget, sqareLeft, sqareRight;
     bool isFirstHolded = false, isHolded = false;
     int holdNum = 0;
     [SerializeField]
-    Image nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage;
+    Image nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage, targetImage_plus, targetImage_minus;
+
+    [SerializeField]
+    Image characterDispImage;
 
     [SerializeField]
     Sprite plusBubbleImage, minusBubbleImage;
@@ -56,6 +65,17 @@ public class GameDirector : MonoBehaviour
         //public static int Range(int min, int max);
 
         //textUI.text = "Game Start";
+
+        Target_Num *= Target_Num < 0 ? -1 : 1;
+        Target_Num = Target_Num ==  0 ? 1 : Target_Num;
+        Target_Num = Target_Num >= 10 ? 9 : Target_Num;
+
+        Target_Num = Messerger.instance.TargetNumMessage;
+
+        targetImage_minus.sprite = numImage[ReturnNumImageIndex(-Target_Num)] = targetNumImage[ReturnNumImageIndex(-Target_Num)];
+        targetImage_plus.sprite  = numImage[ReturnNumImageIndex( Target_Num)] = targetNumImage[ReturnNumImageIndex( Target_Num)];
+
+        characterDispImage.sprite = Messerger.instance.charactersImage[Target_Num];
 
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
@@ -80,8 +100,8 @@ public class GameDirector : MonoBehaviour
         else
         {
             /* ゲームオーバー(リザルト画面へ) */
-            ScoreManager.instance.ScoreMessage = Score;
-            ScoreManager.instance.LevelMessage = Level;
+            Messerger.instance.ScoreMessage = Score;
+            Messerger.instance.LevelMessage = Level;
             SceneManager.LoadScene(resultSceneName);
         }
     }
@@ -94,7 +114,7 @@ public class GameDirector : MonoBehaviour
     public int ReturnRandomNum()
     {
         int i = 0;
-        while (i == 0 || i == -5 || i == 5 || ReturnNumImageIndex(i) < 0 || ReturnNumImageIndex(i) >= numImage.Count)
+        while (i == 0 || i == -Target_Num || i == Target_Num || ReturnNumImageIndex(i) < 0 || ReturnNumImageIndex(i) >= numImage.Count)
         {
             if (Level <= 3)
             {
@@ -143,7 +163,7 @@ public class GameDirector : MonoBehaviour
             }
             if (!isBurst)
             {
-                if (IsPlusMinusFive())
+                if (isPlusMinusFive())
                 {
                     Score += plusMinusFiveScore;
 
@@ -158,9 +178,9 @@ public class GameDirector : MonoBehaviour
                     rightChainNum = 0;
                     */
                 }
-                else if (IsFive())
+                else if (isFive())
                 {
-                    if (IsFive(true, false))
+                    if (isFive(true, false))
                     {
                         Score += fiveScore;
                         leftChainNum++;
@@ -187,7 +207,7 @@ public class GameDirector : MonoBehaviour
                     {
                         leftChainNum = 0;
                     }
-                    if (IsFive(true, true))
+                    if (isFive(true, true))
                     {
                         Score += fiveScore;
                         rightChainNum++;
@@ -232,18 +252,26 @@ public class GameDirector : MonoBehaviour
         }
     }
 
-    bool IsFive(bool selection = false, bool isRight = false)
+    void checkSqare()
     {
-        if (selection) {
-            if (!isRight) return leftNum * leftNum == 25;
-            else return rightNum * rightNum == 25;
-        }
-        return (leftNum * leftNum == 25) || (rightNum * rightNum == 25);
+        sqareTarget = Target_Num * Target_Num;
+        sqareLeft = leftNum * leftNum;
+        sqareRight = rightNum * rightNum;
     }
 
-    bool IsPlusMinusFive()
+    bool isFive(bool selection = false, bool isRight = false)
     {
-        return leftNum * rightNum == -25;
+        checkSqare();
+        if (selection) {
+            if (!isRight) return sqareLeft == sqareTarget;
+            else return sqareRight == sqareTarget;
+        }
+        return (sqareLeft == sqareTarget) || (sqareRight == sqareTarget);
+    }
+
+    bool isPlusMinusFive()
+    {
+        return leftNum * rightNum == -sqareTarget;
     }
 
     public void HoldNum()

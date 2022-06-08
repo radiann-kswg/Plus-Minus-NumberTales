@@ -630,7 +630,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Plus Minus Five
+  m_Text: 'Plus Minus
+
+    NumberTales'
 --- !u!222 &1258354763
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -668,7 +670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce92f96e653c2f7458a780855576e5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: MainScene
+  nextSceneName: CharacterSelectScene
 --- !u!4 &1310626111
 Transform:
   m_ObjectHideFlags: 0
@@ -719,7 +721,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: 50}
+  m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 600, y: 250}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2114551066
@@ -754,7 +756,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\xB15"
+  m_Text: "\xB1NTs"
 --- !u!222 &2114551067
 CanvasRenderer:
   m_ObjectHideFlags: 0

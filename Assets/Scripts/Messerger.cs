@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreManager : MonoBehaviour
+public class Messerger : MonoBehaviour
 {
-    public static ScoreManager instance;
+    public static Messerger instance;
 
     private void Awake()
     {
@@ -19,8 +19,11 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    public List<Sprite> charactersImage = new List<Sprite>();
+
     public int ScoreMessage = 0;
     public int LevelMessage = 1;
+    public int TargetNumMessage = 5;
 
     // Start is called before the first frame update
     void Start()

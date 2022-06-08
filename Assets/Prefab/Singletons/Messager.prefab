@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8762850366233904011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8762850366233904009}
+  - component: {fileID: 8762850366233904008}
+  m_Layer: 0
+  m_Name: Messager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8762850366233904009
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8762850366233904011}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8762850366233904008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8762850366233904011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c0fcad9bf266d4096f8cf0decf9df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charactersImage:
+  - {fileID: 21300000, guid: a0e2a50df6fe54a4db71fa4030b78fc0, type: 3}
+  - {fileID: 21300000, guid: fd3377810f7a51a48814ccd9170fb407, type: 3}
+  - {fileID: 21300000, guid: 31d96bd737b30c2478f1e5ae4a9fcd63, type: 3}
+  - {fileID: 21300000, guid: ca750444b8dfe10488337d2ce4fe6742, type: 3}
+  - {fileID: 21300000, guid: 9fa2f0af0d13a314d8d13fc79626a5ca, type: 3}
+  - {fileID: 21300000, guid: 11e0105fad712b34683a105ebc3c7c78, type: 3}
+  - {fileID: 21300000, guid: 03a7f229f2581184f85266fa81c7ef11, type: 3}
+  - {fileID: 21300000, guid: f9ca59b17d3ba4347a5d6c652a25851e, type: 3}
+  - {fileID: 21300000, guid: ddc5cca34cad16b4ebf597d14497cdbe, type: 3}
+  - {fileID: 21300000, guid: b5cf7317c420f2d49b6423560d1a74ba, type: 3}
+  ScoreMessage: 0
+  LevelMessage: 1
+  TargetNumMessage: 5
