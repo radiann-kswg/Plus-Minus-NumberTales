@@ -1360,13 +1360,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3dc5b6bafdd22904fa77fc09cf35b9c2, type: 3}
   - {fileID: 21300000, guid: 144f57f3bbacc814baaba584fdec1103, type: 3}
   vl: {fileID: 1675519447}
+  Target_Num: 5
   Score: 0
   Level: 1
   fiveScore: 200
   plusMinusFiveScore: 1000
   levelDist: 2000
   bubbleScore: 50
-  random_Num: 0
   bubble_Prefab:
   - {fileID: 8349054624744329370, guid: 5aeab13864c2cc0499321150f9ab0e08, type: 3}
   - {fileID: 8427653658188357444, guid: ec5a27d857d12d2448e03684fe6f5178, type: 3}
