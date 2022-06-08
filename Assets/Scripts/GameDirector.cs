@@ -11,6 +11,8 @@ public class GameDirector : MonoBehaviour
     Text scoreText, levelText;
     [SerializeField]
     List<Sprite> numImage = new List<Sprite>();
+    [SerializeField]
+    List<Sprite> targetNumImage = new List<Sprite>();
 
     [SerializeField]
     velt vl;
@@ -64,6 +66,9 @@ public class GameDirector : MonoBehaviour
         Target_Num *= Target_Num < 0 ? -1 : 1;
         Target_Num = Target_Num ==  0 ? 1 : Target_Num;
         Target_Num = Target_Num >= 10 ? 9 : Target_Num;
+
+        numImage[ReturnNumImageIndex(-Target_Num)] = targetNumImage[ReturnNumImageIndex(-Target_Num)];
+        numImage[ReturnNumImageIndex( Target_Num)] = targetNumImage[ReturnNumImageIndex( Target_Num)];
 
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
