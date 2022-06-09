@@ -13,6 +13,8 @@ public class GameDirector : MonoBehaviour
     List<Sprite> numImage = new List<Sprite>();
     [SerializeField]
     List<Sprite> targetNumImage = new List<Sprite>();
+    [SerializeField]
+    List<AudioClip> characterThemeClip = new List<AudioClip>();
 
     [SerializeField]
     velt vl;
@@ -46,6 +48,9 @@ public class GameDirector : MonoBehaviour
     Image characterDispImage;
 
     [SerializeField]
+    AudioSource audioSource;
+
+    [SerializeField]
     Sprite plusBubbleImage, minusBubbleImage;
 
     bool isGameOver = false;
@@ -76,6 +81,8 @@ public class GameDirector : MonoBehaviour
         targetImage_plus.sprite  = numImage[ReturnNumImageIndex( Target_Num)] = targetNumImage[ReturnNumImageIndex( Target_Num)];
 
         characterDispImage.sprite = Messerger.instance.charactersImage[Target_Num];
+        audioSource.clip = characterThemeClip[Target_Num];
+        audioSource.Play();
 
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
