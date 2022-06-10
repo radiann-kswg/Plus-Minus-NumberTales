@@ -38,8 +38,6 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             director.HoldNum();
-
-            SE.instance.PlayClip(6);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.DownArrow))

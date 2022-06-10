@@ -92,10 +92,10 @@ public class GameDirector : MonoBehaviour
     void Update()
     {
         if(!isGameOver) {
-            nowNumImage.sprite = numImage[ReturnNumImageIndex(nowNum)];
+            nowNumImage.sprite =  numImage[ReturnNumImageIndex(nowNum)];
             nextNumImage.sprite = numImage[ReturnNumImageIndex(nextNum)];
-            if (ReturnNumImageIndex(leftNum) >= 0 && ReturnNumImageIndex(leftNum) < numImage.Count)
-                leftNumImage.sprite = numImage[ReturnNumImageIndex(leftNum)];
+            if (ReturnNumImageIndex(leftNum)  >= 0 && ReturnNumImageIndex(leftNum)  < numImage.Count)
+                leftNumImage.sprite =  numImage[ReturnNumImageIndex(leftNum)];
             if (ReturnNumImageIndex(rightNum) >= 0 && ReturnNumImageIndex(rightNum) < numImage.Count)
                 rightNumImage.sprite = numImage[ReturnNumImageIndex(rightNum)];
             scoreText.text = Score.ToString();
@@ -125,11 +125,15 @@ public class GameDirector : MonoBehaviour
         {
             if (Level <= 3)
             {
-                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.5f) * 4.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, 3.5f) * 4.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+            }
+            else if (Level <= 7)
+            {
+                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.5f) * 7.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
             }
             else
             {
-                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(6 + Level) / (float)Level) * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(12 + Level) / (float)Level) * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
             }
         }
         return i;
@@ -149,121 +153,105 @@ public class GameDirector : MonoBehaviour
             if (!isRight)
             {
                 leftNum += nowNum;
-                if (leftNum * leftNum >= 100)
+                checkSqare();
+                if (sqareLeft >= 100)
                 {
-                    /* ダメージエフェクト */
-                    SE.instance.PlayClip(3);
-
-                    bubbleCloning(true, true);
+                    /* ダメージエフェクト(左) */
                     leftNum = ReturnRandomNum();
+
                     isBurst = true;
                 }
             }
             else
             {
                 rightNum += nowNum;
-                if (rightNum * rightNum >= 100)
+                checkSqare();
+                if (sqareRight >= 100)
                 {
-                    /* ダメージエフェクト */
-                    SE.instance.PlayClip(3);
-
-                    bubbleCloning(true, true);
+                    /* ダメージエフェクト(右) */
                     rightNum = ReturnRandomNum();
+
                     isBurst = true;
                 }
             }
-            if (!isBurst)
+            if (isBurst)
             {
-                if (isPlusMinusFive())
+                /* ダメージエフェクト */
+                SE.instance.PlayClip(3);
+
+                bubbleCloning(true, true);
+            }
+            if (isPlusMinusFive())
+            {
+                Score += plusMinusFiveScore;
+
+                /* 「±5」エフェクト */
+                SE.instance.PlayClip(5);
+
+                deleteBubblesAll(true, true);
+                deleteBubblesAll(false, true);
+                /*
+                leftNum = ReturnRandomNum();
+                rightNum = ReturnRandomNum();
+
+                leftChainNum = 0;
+                rightChainNum = 0;
+                */
+            }
+            else if (isFive())
+            {
+                SE.instance.PlayClip(4);
+
+                if (isFive(true, false))
                 {
-                    Score += plusMinusFiveScore;
-
-                    /* 「±5」エフェクト */
-                    SE.instance.PlayClip(5);
-
-                    deleteBubblesAll(true, true);
-                    deleteBubblesAll(false, true);
-                    /*
-                    leftNum = ReturnRandomNum();
-                    rightNum = ReturnRandomNum();
-
-                    leftChainNum = 0;
-                    rightChainNum = 0;
-                    */
-                }
-                else if (isFive())
-                {
-                    SE.instance.PlayClip(4);
-
-                    if (isFive(true, false))
-                    {
-                        Score += fiveScore;
-                        leftChainNum++;
-                        if (leftChainNum >= 3)
-                        {
-                            leftChainNum = 0;
-                            /* 連鎖終了エフェクト */
-                            leftNum = ReturnRandomNum();
-                        }
-                        else
-                        {
-                            /* バブル一掃エフェクト */
-                            if (leftNum == 5)
-                            {
-                                deleteBubblesAll(true);
-                            }
-                            else
-                            {
-                                deleteBubblesAll(false);
-                            }
-                        }
-                    }
-                    else
+                    Score += fiveScore;
+                    leftChainNum++;
+                    if (leftChainNum >= 3)
                     {
                         leftChainNum = 0;
-                    }
-                    if (isFive(true, true))
-                    {
-                        Score += fiveScore;
-                        rightChainNum++;
-                        if (rightChainNum >= 3)
-                        {
-                            rightChainNum = 0;
-                            /* 連鎖終了エフェクト */
-                            rightNum = ReturnRandomNum();
-                        }
-                        else
-                        {
-                            /* バブル一掃エフェクト */
-                            if (rightNum == 5)
-                            {
-                                deleteBubblesAll(true);
-                            }
-                            else
-                            {
-                                deleteBubblesAll(false);
-                            }
-                        }
+                        /* 連鎖終了エフェクト */
+                        leftNum = ReturnRandomNum();
                     }
                     else
                     {
-                        rightChainNum = 0;
+                        /* バブル一掃エフェクト */
+                        deleteBubblesAll(leftNum > 0);
                     }
                 }
                 else
                 {
-                    SE.instance.PlayClip(2);
-
                     leftChainNum = 0;
+                }
+                if (isFive(true, true))
+                {
+                    Score += fiveScore;
+                    rightChainNum++;
+                    if (rightChainNum >= 3)
+                    {
+                        rightChainNum = 0;
+                        /* 連鎖終了エフェクト */
+                        rightNum = ReturnRandomNum();
+                    }
+                    else
+                    {
+                        /* バブル一掃エフェクト */
+                        deleteBubblesAll(rightNum > 0);
+                    }
+                }
+                else
+                {
                     rightChainNum = 0;
-                    if (nowNum > 0)
-                    {
-                        bubbleCloning(true);
-                    }
-                    else if (nowNum < 0)
-                    {
-                        bubbleCloning(false);
-                    }
+                }
+            }
+            else if(!isBurst)
+            {
+                SE.instance.PlayClip(2);
+
+                leftChainNum = 0;
+                rightChainNum = 0;
+                if (nowNum != 0)
+                {
+                    bubbleCloning(nowNum > 0);
                 }
             }
         }
@@ -278,7 +266,7 @@ public class GameDirector : MonoBehaviour
 
     bool isFive(bool selection = false, bool isRight = false)
     {
-        checkSqare();
+        //checkSqare();
         if (selection) {
             if (!isRight) return sqareLeft == sqareTarget;
             else return sqareRight == sqareTarget;
@@ -288,7 +276,8 @@ public class GameDirector : MonoBehaviour
 
     bool isPlusMinusFive()
     {
-        return leftNum * rightNum == -sqareTarget;
+        //checkSqare();
+        return (leftNum * rightNum == -sqareTarget) && (sqareLeft == sqareRight);
     }
 
     public void HoldNum()
@@ -310,6 +299,8 @@ public class GameDirector : MonoBehaviour
             }
             vl.ResetValue();
             isHolded = true;
+
+            SE.instance.PlayClip(6);
         }
     }
 
@@ -389,28 +380,14 @@ public class GameDirector : MonoBehaviour
 
     void ChangeBubblesHalf(bool isPlus)
     {
-        if (isPlus)
+        var Bubble = isPlus ? GameObject.FindGameObjectsWithTag(MINUS_BUBBLE_TAG)
+                : GameObject.FindGameObjectsWithTag(PLUS_BUBBLE_TAG);
+        if (Bubble.Length > 0)
         {
-            var Bubble = GameObject.FindGameObjectsWithTag(MINUS_BUBBLE_TAG);
-            if (Bubble.Length > 0)
+            int halfBubbleLength = Bubble.Length / 2;
+            for (int i = 0; i < halfBubbleLength; ++i)
             {
-                int halfBubbleLength = Bubble.Length / 2;
-                for (int i = 0; i < halfBubbleLength; ++i)
-                {
-                    ChangeBubble(Bubble[i], isPlus);
-                }
-            }
-        }
-        else
-        {
-            var Bubble = GameObject.FindGameObjectsWithTag(PLUS_BUBBLE_TAG);
-            if (Bubble.Length > 0)
-            {
-                int halfBubbleLength = Bubble.Length / 2;
-                for (int i = 0; i < halfBubbleLength; ++i)
-                {
-                    ChangeBubble(Bubble[i], isPlus);
-                }
+                ChangeBubble(Bubble[i], isPlus);
             }
         }
     }
