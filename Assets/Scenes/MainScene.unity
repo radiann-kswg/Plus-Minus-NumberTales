@@ -1044,7 +1044,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1a69d21e81fec094f918b5cc61e3a5e5, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6db03d4925ca1e9469cf8e75433cf1ac, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
@@ -1620,6 +1620,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3900cf625681ad444ba36ea7aa2e8f97, type: 3}
   - {fileID: 21300000, guid: a9da6cdb87419d14ba5911341f7c6671, type: 3}
   - {fileID: 21300000, guid: 8dba0a6bab6b15d46a8cdafa961eb946, type: 3}
+  characterThemeClip:
+  - {fileID: 8300000, guid: 5dc510b5d8ab25f478293d0cafc39c63, type: 3}
+  - {fileID: 8300000, guid: 8f5ea7c77a9ceab4999ec8c19f6f7271, type: 3}
+  - {fileID: 8300000, guid: ed0a7e2feba29bf4db598c081f052ce5, type: 3}
+  - {fileID: 8300000, guid: 7ab2330c0ee25954ab01333510ca4b99, type: 3}
+  - {fileID: 8300000, guid: 9c2442cfb55495c49aabefcdb5b06a28, type: 3}
+  - {fileID: 8300000, guid: 6db03d4925ca1e9469cf8e75433cf1ac, type: 3}
+  - {fileID: 8300000, guid: d77e5fc730be269488e0d9e1c799c58d, type: 3}
+  - {fileID: 8300000, guid: 896f18b196f5dff4aaff827c60e53372, type: 3}
+  - {fileID: 8300000, guid: 112f94a4ec6337948a9f8c5bdf760d0a, type: 3}
+  - {fileID: 8300000, guid: 57ddaf33b9a103e4db80c1d86f5fbb2f, type: 3}
   vl: {fileID: 1675519447}
   Target_Num: 5
   Score: 0
@@ -1639,6 +1650,7 @@ MonoBehaviour:
   targetImage_plus: {fileID: 2127786368}
   targetImage_minus: {fileID: 527312446}
   characterDispImage: {fileID: 511228889}
+  audioSource: {fileID: 519420030}
   plusBubbleImage: {fileID: 21300000, guid: 946a962ebc1982841adaead658a8858c, type: 3}
   minusBubbleImage: {fileID: 21300000, guid: 61625f8e4ac76df408c559433f91872f, type: 3}
   resultSceneName: ResultScene

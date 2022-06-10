@@ -19,6 +19,7 @@ public class SceneSwitcher : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
+            SE.instance.PlayClip(0);
             SceneManager.LoadScene(nextSceneName);
         }
     }
