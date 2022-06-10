@@ -24,16 +24,22 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             sw.Switching(false);
+
+            SE.instance.PlayClip(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             sw.Switching(true);
+
+            SE.instance.PlayClip(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             director.HoldNum();
+
+            SE.instance.PlayClip(6);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.DownArrow))

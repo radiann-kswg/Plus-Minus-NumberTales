@@ -32,15 +32,21 @@ public class PlayerSelector : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             changeCharacter(false);
+
+            SE.instance.PlayClip(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             changeCharacter(true);
+
+            SE.instance.PlayClip(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
+            SE.instance.PlayClip(0);
+
             Messerger.instance.TargetNumMessage = target;
             SceneManager.LoadScene(mainSceneName);
         }

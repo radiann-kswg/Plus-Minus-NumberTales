@@ -152,6 +152,8 @@ public class GameDirector : MonoBehaviour
                 if (leftNum * leftNum >= 100)
                 {
                     /* ダメージエフェクト */
+                    SE.instance.PlayClip(3);
+
                     bubbleCloning(true, true);
                     leftNum = ReturnRandomNum();
                     isBurst = true;
@@ -163,6 +165,8 @@ public class GameDirector : MonoBehaviour
                 if (rightNum * rightNum >= 100)
                 {
                     /* ダメージエフェクト */
+                    SE.instance.PlayClip(3);
+
                     bubbleCloning(true, true);
                     rightNum = ReturnRandomNum();
                     isBurst = true;
@@ -175,6 +179,8 @@ public class GameDirector : MonoBehaviour
                     Score += plusMinusFiveScore;
 
                     /* 「±5」エフェクト */
+                    SE.instance.PlayClip(5);
+
                     deleteBubblesAll(true, true);
                     deleteBubblesAll(false, true);
                     /*
@@ -187,6 +193,8 @@ public class GameDirector : MonoBehaviour
                 }
                 else if (isFive())
                 {
+                    SE.instance.PlayClip(4);
+
                     if (isFive(true, false))
                     {
                         Score += fiveScore;
@@ -244,6 +252,8 @@ public class GameDirector : MonoBehaviour
                 }
                 else
                 {
+                    SE.instance.PlayClip(2);
+
                     leftChainNum = 0;
                     rightChainNum = 0;
                     if (nowNum > 0)
@@ -288,6 +298,7 @@ public class GameDirector : MonoBehaviour
             int num = 0;
             if (isFirstHolded) num = holdNum;
             holdNum = nowNum;
+
             if (num == 0 && !isFirstHolded)
             {
                 SwitchNextNum();
