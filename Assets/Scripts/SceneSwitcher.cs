@@ -11,15 +11,23 @@ public class SceneSwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        TransitionManager.instance.Reset();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+        if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            SE.instance.PlayClip(0);
+            if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            {
+                SE.instance.PlayClip(0);
+                TransitionManager.instance.FadeOut();
+            }
+        }
+
+        if(TransitionManager.instance.IsReadyToNextSceneNow())
+        {
             SceneManager.LoadScene(nextSceneName);
         }
     }

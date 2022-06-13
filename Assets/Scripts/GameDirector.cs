@@ -65,7 +65,6 @@ public class GameDirector : MonoBehaviour
     {
         // float speed = 0;
 
-
         //int rnd = Random.Range(1, 10);
         //public static int Range(int min, int max);
 
@@ -82,35 +81,55 @@ public class GameDirector : MonoBehaviour
 
         characterDispImage.sprite = Messerger.instance.charactersImage[Target_Num];
         audioSource.clip = characterThemeClip[Target_Num];
-        audioSource.Play();
 
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
+
+        updateUIs();
+
+        TransitionManager.instance.Reset();
+        audioSource.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!isGameOver) {
-            nowNumImage.sprite =  numImage[ReturnNumImageIndex(nowNum)];
-            nextNumImage.sprite = numImage[ReturnNumImageIndex(nextNum)];
-            if (ReturnNumImageIndex(leftNum)  >= 0 && ReturnNumImageIndex(leftNum)  < numImage.Count)
-                leftNumImage.sprite =  numImage[ReturnNumImageIndex(leftNum)];
-            if (ReturnNumImageIndex(rightNum) >= 0 && ReturnNumImageIndex(rightNum) < numImage.Count)
-                rightNumImage.sprite = numImage[ReturnNumImageIndex(rightNum)];
-            scoreText.text = Score.ToString();
-            if (isFirstHolded)
-                holdNumImage.sprite = numImage[ReturnNumImageIndex(holdNum)];
-            Level = Score / levelDist + 1;
-            levelText.text = Level.ToString();
-        }
-        else
+        if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            /* ゲームオーバー(リザルト画面へ) */
-            Messerger.instance.ScoreMessage = Score;
-            Messerger.instance.LevelMessage = Level;
+
+            if (!isGameOver)
+            {
+                updateUIs();
+            }
+            else
+            {
+                /* ゲームオーバー(リザルト画面へ) */
+                SE.instance.PlayClip(3);
+                Messerger.instance.ScoreMessage = Score;
+                Messerger.instance.LevelMessage = Level;
+                TransitionManager.instance.FadeOut();
+            }
+        }
+
+        if (TransitionManager.instance.IsReadyToNextSceneNow())
+        {
             SceneManager.LoadScene(resultSceneName);
         }
+    }
+
+    private void updateUIs()
+    {
+        nowNumImage.sprite = numImage[ReturnNumImageIndex(nowNum)];
+        nextNumImage.sprite = numImage[ReturnNumImageIndex(nextNum)];
+        if (ReturnNumImageIndex(leftNum) >= 0 && ReturnNumImageIndex(leftNum) < numImage.Count)
+            leftNumImage.sprite = numImage[ReturnNumImageIndex(leftNum)];
+        if (ReturnNumImageIndex(rightNum) >= 0 && ReturnNumImageIndex(rightNum) < numImage.Count)
+            rightNumImage.sprite = numImage[ReturnNumImageIndex(rightNum)];
+        scoreText.text = Score.ToString();
+        if (isFirstHolded)
+            holdNumImage.sprite = numImage[ReturnNumImageIndex(holdNum)];
+        Level = Score / levelDist + 1;
+        levelText.text = Level.ToString();
     }
 
     private int ReturnNumImageIndex(int num)
