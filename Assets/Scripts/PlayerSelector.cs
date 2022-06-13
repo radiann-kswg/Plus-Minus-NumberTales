@@ -23,31 +23,40 @@ public class PlayerSelector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        TransitionManager.instance.Reset();
         changeCharacterDisp(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            changeCharacter(false);
+            if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                changeCharacter(false);
 
-            SE.instance.PlayClip(1);
+                SE.instance.PlayClip(1);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                changeCharacter(true);
+
+                SE.instance.PlayClip(1);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            {
+                SE.instance.PlayClip(0);
+                Messerger.instance.TargetNumMessage = target;
+
+                TransitionManager.instance.FadeOut();
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.RightArrow))
+        if (TransitionManager.instance.IsReadyToNextSceneNow())
         {
-            changeCharacter(true);
-
-            SE.instance.PlayClip(1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
-        {
-            SE.instance.PlayClip(0);
-
-            Messerger.instance.TargetNumMessage = target;
             SceneManager.LoadScene(mainSceneName);
         }
     }
