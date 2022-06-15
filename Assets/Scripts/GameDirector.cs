@@ -4,91 +4,192 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-
+/// <summary>
+/// メインシーンでゲーム進行などの処理を行うクラス
+/// </summary>
 public class GameDirector : MonoBehaviour
 {
+    /// <summary>
+    /// スコアを表示するTextコンポーネント
+    /// </summary>
     [SerializeField]
-    Text scoreText, levelText;
+    Text scoreText;
+    /// <summary>
+    /// レベルを表示するTextコンポーネント
+    /// </summary>
     [SerializeField]
-    List<Sprite> numImage = new List<Sprite>();
+    Text levelText;
+
+    /// <summary>
+    /// 通常の数字を表示する画像(Sprite)リスト
+    /// </summary>
+    [SerializeField]
+    List<Sprite> nornalNumImage = new List<Sprite>();
+    /// <summary>
+    /// 目標の数字を表示する画像(Sprite)リスト
+    /// </summary>
     [SerializeField]
     List<Sprite> targetNumImage = new List<Sprite>();
+
+    /// <summary>
+    /// キャラクターのテーマBGM(AudioCilp)リスト
+    /// </summary>
     [SerializeField]
     List<AudioClip> characterThemeClip = new List<AudioClip>();
 
+    /// <summary>
+    /// 数字が流動するベルト(Veltコンポーネント)
+    /// </summary>
     [SerializeField]
-    velt vl;
+    Velt vl;
 
-    public int Target_Num = 5;//目標値(デフォルト:5)
+    /// <summary>
+    /// 目標の数字の絶対値(デフォルト:5)
+    /// </summary>
+    public int TargetNum = 5;
 
-    public int Score = 0, Level = 1;
-    int leftChainNum = 0, rightChainNum = 0;
+    /// <summary>
+    /// スコア
+    /// </summary>
+    public int Score = 0;
+    /// <summary>
+    /// レベル
+    /// </summary>
+    public int Level = 1;
 
+    /// <summary>
+    /// 目標の数字が1つできた時の得点
+    /// </summary>
     [SerializeField]
-    int fiveScore = 200, plusMinusFiveScore = 2000, levelDist = 5000, bubbleScore = 50;
-
-    //[SerializeField]
-    float random_Num;//大きさ
-
+    int fiveScore = 200;
+    /// <summary>
+    /// 目標の数字が符号の異なる状態で2つできた時の得点
+    /// </summary>
     [SerializeField]
-    GameObject[] bubble_Prefab;
+    int plusMinusFiveScore = 2000;
+    /// <summary>
+    /// レベルアップに必要なスコア
+    /// </summary>
+    [SerializeField]
+    int levelDist = 5000;
+    /// <summary>
+    /// バブルを消した時に加点されるバブル1つごとの得点
+    /// </summary>
+    [SerializeField]
+    int bubbleScore = 50;
+
+    /// <summary>
+    /// バブル(Prefabオブジェクト)
+    /// </summary>
+    [SerializeField]
+    GameObject[] bubblePrefab;
     
-    int random_Unit;//個数
-    bool isBubbling = true;
+    /// <summary>
+    /// バブルを発生させることができるかどうか
+    /// </summary>
+    private bool _isBubbling = true;
 
-    int nowNum, nextNum, leftNum = 0, rightNum = 0;
+    /// <summary>
+    /// 現在流入しようとしている数字
+    /// </summary>
+    int nowNum;
+    /// <summary>
+    /// 次に流入しようとしている数字
+    /// </summary>
+    int nextNum;
+    /// <summary>
+    /// 現在の左の数字
+    /// </summary>
+    int leftNum = 0;
+    /// <summary>
+    /// 現在の右の数字
+    /// </summary>
+    int rightNum = 0;
 
-    int sqareTarget, sqareLeft, sqareRight;
-    bool isFirstHolded = false, isHolded = false;
+    /// <summary>
+    /// 左の連鎖数
+    /// </summary>
+    private int _leftChainNum = 0;
+    /// <summary>
+    /// 右の連鎖数
+    /// </summary>
+    private int _rightChainNum = 0;
+
+    /// <summary>
+    /// 数字を確認するために用いる、それぞれの数字を2乗した値
+    /// </summary>
+    private int _sqareTarget, _sqareLeft, _sqareRight;
+
+    /// <summary>
+    /// ホールドされている数字(デフォルト,ホールドされていない状態:0)
+    /// </summary>
     int holdNum = 0;
+    /// <summary>
+    /// 少なくとも1回ホールドされたか
+    /// </summary>
+    bool isFirstHolded = false;
+    /// <summary>
+    /// 現在の手でホールドが実行されたか
+    /// </summary>
+    bool isHolded = false;
+
+    /// <summary>
+    /// それぞれの数字を表示するImageコンポーネント
+    /// </summary>
     [SerializeField]
     Image nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage, targetImage_plus, targetImage_minus;
-
+    /// <summary>
+    /// キャラクターを表示するImageコンポーネント
+    /// </summary>
     [SerializeField]
     Image characterDispImage;
 
+    /// <summary>
+    /// BGMを再生するAudioSourceコンポーネント
+    /// </summary>
     [SerializeField]
-    AudioSource audioSource;
+    AudioSource bgmAudioSource;
 
+    /// <summary>
+    /// バブルのオブジェクトタグ(const string)
+    /// </summary>
+    [SerializeField]
+    const string PLUS_BUBBLE_TAG = "PlusBubble", MINUS_BUBBLE_TAG = "MinusBubble";
+    /// <summary>
+    /// バブルの画像(Sprite),属性変更に用いる
+    /// </summary>
     [SerializeField]
     Sprite plusBubbleImage, minusBubbleImage;
 
+    /// <summary>
+    /// ゲームオーバーとなったかどうか
+    /// </summary>
     bool isGameOver = false;
+
+    /// <summary>
+    /// リザルト画面(Scene)の名前
+    /// </summary>
     [SerializeField]
     string resultSceneName;
-
-    const string PLUS_BUBBLE_TAG = "PlusBubble";
-    const string MINUS_BUBBLE_TAG = "MinusBubble";
 
     // Start is called before the first frame update
     void Start()
     {
-        // float speed = 0;
+        _InitTargetName();
 
-        //int rnd = Random.Range(1, 10);
-        //public static int Range(int min, int max);
+        targetImage_minus.sprite = nornalNumImage[_ReturnNumImageIndex(-TargetNum)] = targetNumImage[_ReturnNumImageIndex(-TargetNum)];
+        targetImage_plus.sprite  = nornalNumImage[_ReturnNumImageIndex( TargetNum)] = targetNumImage[_ReturnNumImageIndex( TargetNum)];
 
-        //textUI.text = "Game Start";
-
-        Target_Num *= Target_Num < 0 ? -1 : 1;
-        Target_Num = Target_Num ==  0 ? 1 : Target_Num;
-        Target_Num = Target_Num >= 10 ? 9 : Target_Num;
-
-        Target_Num = Messerger.instance.TargetNumMessage;
-
-        targetImage_minus.sprite = numImage[ReturnNumImageIndex(-Target_Num)] = targetNumImage[ReturnNumImageIndex(-Target_Num)];
-        targetImage_plus.sprite  = numImage[ReturnNumImageIndex( Target_Num)] = targetNumImage[ReturnNumImageIndex( Target_Num)];
-
-        characterDispImage.sprite = Messerger.instance.charactersImage[Target_Num];
-        audioSource.clip = characterThemeClip[Target_Num];
+        characterDispImage.sprite = Messerger.instance.charactersImage[TargetNum];
+        bgmAudioSource.clip = characterThemeClip[TargetNum];
 
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
 
-        updateUIs();
+        _UpdateUIs();
 
         TransitionManager.instance.Reset();
-        audioSource.Play();
+        bgmAudioSource.Play();
     }
 
     // Update is called once per frame
@@ -99,7 +200,7 @@ public class GameDirector : MonoBehaviour
 
             if (!isGameOver)
             {
-                updateUIs();
+                _UpdateUIs();
             }
             else
             {
@@ -117,318 +218,461 @@ public class GameDirector : MonoBehaviour
         }
     }
 
-    private void updateUIs()
+    /// <summary>
+    /// 目標の数字を初期設定します
+    /// </summary>
+    private void _InitTargetName()
     {
-        nowNumImage.sprite = numImage[ReturnNumImageIndex(nowNum)];
-        nextNumImage.sprite = numImage[ReturnNumImageIndex(nextNum)];
-        if (ReturnNumImageIndex(leftNum) >= 0 && ReturnNumImageIndex(leftNum) < numImage.Count)
-            leftNumImage.sprite = numImage[ReturnNumImageIndex(leftNum)];
-        if (ReturnNumImageIndex(rightNum) >= 0 && ReturnNumImageIndex(rightNum) < numImage.Count)
-            rightNumImage.sprite = numImage[ReturnNumImageIndex(rightNum)];
-        scoreText.text = Score.ToString();
-        if (isFirstHolded)
-            holdNumImage.sprite = numImage[ReturnNumImageIndex(holdNum)];
-        Level = Score / levelDist + 1;
-        levelText.text = Level.ToString();
+        // シングルトンから目標の数字を受信
+        TargetNum = Messerger.instance.TargetNumMessage;
+
+        /* 目標の数字の例外処理 */
+        // 負の値を正に(絶対値化)
+        TargetNum *= TargetNum < 0 ? -1 : 1;
+        // 0だった時の処理（0番(シークレット)のキャラを解禁しないのであれば最小値:1に）
+        TargetNum = TargetNum == 0 ? 1 : TargetNum;
+        // 2桁以上の値を最大値:9に
+        TargetNum = TargetNum >= 10 ? 9 : TargetNum;
     }
 
-    private int ReturnNumImageIndex(int num)
+    /// <summary>
+    /// 数字の値から数字の画像リストの添え字を返します
+    /// </summary>
+    /// <param name="num">数字の値（-9～+9）</param>
+    /// <returns></returns>
+    private int _ReturnNumImageIndex(int num)
     {
         return num + 9;
     }
 
-    public int ReturnRandomNum()
+    /// <summary>
+    /// 数字の画像を更新します
+    /// </summary>
+    /// <param name="isRight">右の数字:true,左の数字:false</param>
+    /// <returns></returns>
+    private void _UpdateNumImage(bool isRight)
     {
-        int i = 0;
-        while (i == 0 || i == -Target_Num || i == Target_Num || ReturnNumImageIndex(i) < 0 || ReturnNumImageIndex(i) >= numImage.Count)
-        {
-            if (Level <= 3)
-            {
-                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, 3.5f) * 4.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
-            }
-            else if (Level <= 7)
-            {
-                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.5f) * 7.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
-            }
-            else
-            {
-                i = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(12 + Level) / (float)Level) * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
-            }
-        }
-        return i;
+        int _num = isRight ? rightNum : leftNum;
+        if (_ReturnNumImageIndex(_num) >= 0 && _ReturnNumImageIndex(_num) < nornalNumImage.Count)
+            (isRight ? rightNumImage : leftNumImage).sprite = nornalNumImage[_ReturnNumImageIndex(_num)];
     }
 
+    /// <summary>
+    /// UIを更新します
+    /// </summary>
+    private void _UpdateUIs()
+    {
+        nowNumImage.sprite = nornalNumImage[_ReturnNumImageIndex(nowNum)];
+        nextNumImage.sprite = nornalNumImage[_ReturnNumImageIndex(nextNum)];
+        _UpdateNumImage(false);
+        _UpdateNumImage(true);
+        scoreText.text = Score.ToString();
+        if (isFirstHolded)
+            holdNumImage.sprite = nornalNumImage[_ReturnNumImageIndex(holdNum)];
+        Level = Score / levelDist + 1;
+        levelText.text = Level.ToString();
+    }
+
+    /// <summary>
+    /// 指定した数字が目標の数字と0以外でないか、指定された数字の画像リストの範囲内の値かどうかを判定します
+    /// </summary>
+    /// <param name="num">数字の値</param>
+    /// <returns>指定した数字が0,目標の数字,範囲外の数字のどれかであるか</returns>
+    private bool _CheckNumberIsNotZeroOrTarger(int num)
+    {
+        return num == 0 || num == -TargetNum || num == TargetNum
+            || _ReturnNumImageIndex(num) < 0 || _ReturnNumImageIndex(num) >= nornalNumImage.Count;
+    }
+
+    /// <summary>
+    /// レベルデザインに応じたランダムな数字を返します
+    /// </summary>
+    /// <returns>抽選結果</returns>
+    public int ReturnRandomNum()
+    {
+        int num = 0;
+        while (_CheckNumberIsNotZeroOrTarger(num))
+        {
+            /* レベルデザインに基づく乱数生成 */
+            if (Level <= 3)
+            {
+                num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 3.5f) * 4.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+                continue;
+            }
+            if (Level <= 7)
+            {
+                num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.5f) * 7.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+                continue;
+            }
+            num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(12 + Level) / (float)Level) * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+        }
+        return num;
+    }
+
+    /// <summary>
+    /// 次の数字に切り替えます
+    /// </summary>
     public void SwitchNextNum()
     {
         nowNum = nextNum;
         nextNum = ReturnRandomNum();
     }
 
-    public void EnterNum2Stock(bool isRight)
+    /// <summary>
+    /// 左右の数字を抽出します
+    /// </summary>
+    /// <param name="isRight">true:右の数字, false:左の数字</param>
+    /// <returns>抽出結果</returns>
+    private int _ReturnSelectedNum(bool isRight)
     {
-        if (isBubbling)
+        return isRight ? rightNum : leftNum;
+    }
+
+    /// <summary>
+    /// 左右の数字を設定します
+    /// </summary>
+    /// <param name="isRight">true:右の数字, false:左の数字</param>
+    /// <param name="newNum">設定する数字</param>
+    private void _SetSelectedNum(bool isRight, int newNum)
+    {
+        if (isRight) rightNum = newNum;
+        else leftNum = newNum;
+    }
+
+    /// <summary>
+    /// バブルの半分消しと連鎖数のインクリメントを実行します
+    /// 連鎖数が一定となった時は連鎖を終了します
+    /// </summary>
+    /// <param name="isRight">右の数字についてか</param>
+    private void _FlushNumAndHalfBubble(bool isRight)
+    {
+        /* 半分消しエフェクト */
+        DeleteBubblesAll(_ReturnSelectedNum(isRight) > 0);
+
+        const int _LIMIT_CHAIN_NUM = 3;
+        int _varChainNum = isRight ? _rightChainNum : _leftChainNum;
+        if(_varChainNum + 1 >= _LIMIT_CHAIN_NUM)
         {
-            bool isBurst = false;
-            if (!isRight)
+            _ResetChain(isRight, true);
+            
+            //インクリメントせず関数を離脱
+            return;
+        }
+        if (isRight) ++_rightChainNum;
+        else ++_leftChainNum;
+    }
+
+    /// <summary>
+    /// 全消し処理を実行します
+    /// </summary>
+    private void _FlashAll()
+    {
+        // 加点
+        Score += plusMinusFiveScore;
+
+        /* 全消しエフェクト */
+        DeleteBubblesAll(true, true);
+        DeleteBubblesAll(false, true);
+    }
+
+    /// <summary>
+    /// 連鎖を終了します
+    /// </summary>
+    /// <param name="isRight">右の数字についてか</param>
+    /// <param name="isSetNum2Random">数字をランダムに変更するか</param>
+    private void _ResetChain(bool isRight, bool isSetNum2Random)
+    {
+        if (isRight) _rightChainNum = 0;
+        else _leftChainNum = 0;
+
+        if (isSetNum2Random) _SetSelectedNum(isRight, ReturnRandomNum());
+    }
+
+    /// <summary>
+    /// 数字を加算し、得点処理をします
+    /// </summary>
+    /// <param name="isEnter2Right">右の数字へ:true,左の数字へ:false</param>
+    public void EnterNum2Stock(bool isEnter2Right)
+    {
+        // バブル発生可能でないときは処理しない
+        if (!_isBubbling) return;
+
+        bool isBurst = false; // バーストしたか
+        int _addedNum = _ReturnSelectedNum(isEnter2Right) + nowNum;
+        if (_CheckSqares(_addedNum) >= 100)
+        {
+            // ランダムな数字に更新
+            _SetSelectedNum(isEnter2Right, ReturnRandomNum());
+            isBurst = true;
+        }
+        else
+        {
+            // 加算した数字に更新
+            _SetSelectedNum(isEnter2Right, _addedNum);
+        }
+        // 確認用の2乗数を更新
+        _CheckSqares();
+
+        // バーストしたとき
+        if (isBurst)
+        {
+            /* ダメージエフェクト */
+            SE.instance.PlayClip(3);
+
+            BubbleCloning(true, true);
+        }
+        /* 左右で符号の異なる目標の数字を生成したとき */
+        if (IsPlusMinusFive())
+        {
+            // SEを再生
+            SE.instance.PlayClip(5);
+
+            // 全消しを実行
+            _FlashAll();
+
+            // 連鎖数やその他の得点,エフェクト処理は不要なので関数を離脱
+            return;
+        }
+        /* 目標の数字が生成されたときの処理(左右共通) */
+        if (IsFive())
+        {
+            // SEを再生
+            SE.instance.PlayClip(4);
+            
+            /* 目標の数字が生成されたときの左右ごとの処理 */
+            foreach (bool _isRightBecomeFive in (new bool[] { !isEnter2Right, isEnter2Right }))
             {
-                leftNum += nowNum;
-                checkSqare();
-                if (sqareLeft >= 100)
-                {
-                    /* ダメージエフェクト(左) */
-                    leftNum = ReturnRandomNum();
-
-                    isBurst = true;
-                }
-            }
-            else
-            {
-                rightNum += nowNum;
-                checkSqare();
-                if (sqareRight >= 100)
-                {
-                    /* ダメージエフェクト(右) */
-                    rightNum = ReturnRandomNum();
-
-                    isBurst = true;
-                }
-            }
-            if (isBurst)
-            {
-                /* ダメージエフェクト */
-                SE.instance.PlayClip(3);
-
-                bubbleCloning(true, true);
-            }
-            if (isPlusMinusFive())
-            {
-                Score += plusMinusFiveScore;
-
-                /* 「±5」エフェクト */
-                SE.instance.PlayClip(5);
-
-                deleteBubblesAll(true, true);
-                deleteBubblesAll(false, true);
-                /*
-                leftNum = ReturnRandomNum();
-                rightNum = ReturnRandomNum();
-
-                leftChainNum = 0;
-                rightChainNum = 0;
-                */
-            }
-            else if (isFive())
-            {
-                SE.instance.PlayClip(4);
-
-                if (isFive(true, false))
+                if (IsFive(true, _isRightBecomeFive))
                 {
                     Score += fiveScore;
-                    leftChainNum++;
-                    if (leftChainNum >= 3)
-                    {
-                        leftChainNum = 0;
-                        /* 連鎖終了エフェクト */
-                        leftNum = ReturnRandomNum();
-                    }
-                    else
-                    {
-                        /* バブル一掃エフェクト */
-                        deleteBubblesAll(leftNum > 0);
-                    }
+                    _FlushNumAndHalfBubble(_isRightBecomeFive);
                 }
                 else
                 {
-                    leftChainNum = 0;
-                }
-                if (isFive(true, true))
-                {
-                    Score += fiveScore;
-                    rightChainNum++;
-                    if (rightChainNum >= 3)
-                    {
-                        rightChainNum = 0;
-                        /* 連鎖終了エフェクト */
-                        rightNum = ReturnRandomNum();
-                    }
-                    else
-                    {
-                        /* バブル一掃エフェクト */
-                        deleteBubblesAll(rightNum > 0);
-                    }
-                }
-                else
-                {
-                    rightChainNum = 0;
+                    _ResetChain(_isRightBecomeFive, false);
                 }
             }
-            else if(!isBurst)
+        }
+        /* 目標の数字が生成されていないときの処理(バースト以外) */
+        else if (!isBurst)
+        {
+            // SEを再生
+            SE.instance.PlayClip(2);
+            // バブルを発生
+            if (nowNum != 0)
             {
-                SE.instance.PlayClip(2);
-
-                leftChainNum = 0;
-                rightChainNum = 0;
-                if (nowNum != 0)
-                {
-                    bubbleCloning(nowNum > 0);
-                }
+                BubbleCloning(nowNum > 0);
             }
         }
     }
 
-    void checkSqare()
+    /// <summary>
+    /// 2乗数の確認をします
+    /// </summary>
+    /// <param name="num">数字指定(任意)</param>
+    /// <returns>数字を指定していない場合:0,指定した場合:指定した数字の2乗数</returns>
+    private int _CheckSqares(int num = -256)
     {
-        sqareTarget = Target_Num * Target_Num;
-        sqareLeft = leftNum * leftNum;
-        sqareRight = rightNum * rightNum;
+        if (num == -256)
+        {
+            _sqareTarget = TargetNum * TargetNum;
+            _sqareLeft = leftNum * leftNum;
+            _sqareRight = rightNum * rightNum;
+            return 0;
+        }
+        return num * num;
     }
 
-    bool isFive(bool selection = false, bool isRight = false)
+    /// <summary>
+    /// 目標の数字が生成されたかを確認します
+    /// </summary>
+    /// <param name="selection">左右を指定するか</param>
+    /// <param name="isRight">(左右を指定する場合) true:右,false:左</param>
+    /// <returns>目標の数字が生成されたか</returns>
+    bool IsFive(bool selection = false, bool isRight = false)
     {
-        //checkSqare();
+        /*
+        // 確認用2乗数の更新
+        _CheckSqares();
+        */
         if (selection) {
-            if (!isRight) return sqareLeft == sqareTarget;
-            else return sqareRight == sqareTarget;
+            if (!isRight) return _sqareLeft == _sqareTarget;
+            else return _sqareRight == _sqareTarget;
         }
-        return (sqareLeft == sqareTarget) || (sqareRight == sqareTarget);
+        return (_sqareLeft == _sqareTarget) || (_sqareRight == _sqareTarget);
     }
 
-    bool isPlusMinusFive()
+    /// <summary>
+    /// 目標の数字が左右異なる符号で生成されたかを確認します
+    /// </summary>
+    /// <returns>目標の数字が左右異なる符号で生成されたか</returns>
+    bool IsPlusMinusFive()
     {
-        //checkSqare();
-        return (leftNum * rightNum == -sqareTarget) && (sqareLeft == sqareRight);
+        /*
+        // 確認用2乗数の更新
+        _CheckSqares();
+        */
+        return (leftNum * rightNum == -_sqareTarget) && (_sqareLeft == _sqareRight);
     }
 
+    /// <summary>
+    /// ホールドを実行します
+    /// </summary>
     public void HoldNum()
     {
-        if (!isHolded)
+        // すでにこの手でホールドされている場合は処理しない
+        if (isHolded) return;
+
+        // 1回はホールドされた場合ホールドされている数字をバッファに移す
+        int num = isFirstHolded ? holdNum : 0;
+        
+        /* ホールド */
+        holdNum = nowNum;
+
+        // 1回もホールドされていない場合
+        if (!isFirstHolded)
         {
-            int num = 0;
-            if (isFirstHolded) num = holdNum;
-            holdNum = nowNum;
-
-            if (num == 0 && !isFirstHolded)
-            {
-                SwitchNextNum();
-                isFirstHolded = true;
-            }
-            else
-            {
-                nowNum = num;
-            }
-            vl.ResetValue();
-            isHolded = true;
-
-            SE.instance.PlayClip(6);
+            // 次の数字へ
+            SwitchNextNum();
+            
+            isFirstHolded = true;
         }
+        // 1回はホールドされた場合
+        else
+        {
+            // バッファ(この手でホールドする前の数字)を現在の数字へ
+            nowNum = num;
+        }
+
+        // SEを再生
+        SE.instance.PlayClip(6);
+
+        // ベルトを初期位置へ
+        vl.ResetValue();
+        
+        isHolded = true;
     }
 
+    /// <summary>
+    /// ホールド状態のフラグを初期化します
+    /// </summary>
     public void TurnOffHoldFlag()
     {
         isHolded = false;
     }
 
+    /// <summary>
+    /// ゲームオーバーのフラグを立てます
+    /// </summary>
     public void SwitchGameOver()
     {
         isGameOver = true;
     }
 
-    void bubbleCloning(bool isPlus, bool isBursted = false)
+    /// <summary>
+    /// バブルを生成します
+    /// </summary>
+    /// <param name="isPlus">プラスのバブルを生成するかどうか</param>
+    /// <param name="isBursted">バーストが発生したか</param>
+    void BubbleCloning(bool isPlus, bool isBursted = false)
     {
-        random_Unit = Random.Range(3, 6);
-        if (isBursted) random_Unit = 5;
+        int _randomUnit = Random.Range(3, 6);
+        if (isBursted) _randomUnit = 5;
         // Debug.Log(random_Unit.ToString());
-        GameObject[] obj = new GameObject[random_Unit];
+
+        GameObject obj = null;
         float angleAnp = 40.0f;
         float positionXAnp = 2.0f, positionY = 6.0f;
         float speed = 3.0f;
-        for (int i = 0; i < random_Unit; i++)
+        for (int i = 0; i < _randomUnit; i++)
         {
-            random_Num = Random.Range(1.25f, 3.0f + Mathf.Epsilon);
-            float random_x = Mathf.Sin(Random.Range(0.0f, angleAnp) * Mathf.Deg2Rad * Mathf.Sign((float)(2 * Random.Range(0, 2) - 1)));
-            float random_y = Mathf.Cos(Random.Range(0.0f, angleAnp) * Mathf.Deg2Rad);
             // Debug.Log(random_Num.ToString("f0"));
-            if (isPlus || isBursted)
+
+            bool[] _bubbleFlag = new bool[] { (isPlus || isBursted), (!isPlus || isBursted) };
+            for (int j = 0; j < 2; ++j)
             {
-                obj[i] = Instantiate(bubble_Prefab[0],
-                    new Vector3(Random.Range(-positionXAnp, positionXAnp), positionY, 0.0f), Quaternion.identity);
-                obj[i].transform.localScale = random_Num * new Vector3(1.0f, 1.0f, 1.0f);
-                obj[i].GetComponent<Rigidbody2D>().velocity = speed * new Vector2(random_x, random_y);
-                //break;
-            }
-            if (!isPlus || isBursted)
-            {
-                obj[i] = Instantiate(bubble_Prefab[1],
-                    new Vector3(Random.Range(-positionXAnp, positionXAnp), positionY, 0.0f), Quaternion.identity);
-                obj[i].transform.localScale = random_Num * new Vector3(1.0f, 1.0f, 1.0f);
-                obj[i].GetComponent<Rigidbody2D>().velocity = speed * new Vector2(random_x, random_y);
-                //break;
+                if (_bubbleFlag[j])
+                {
+                    float _randomNum = Random.Range(1.25f, 3.0f + Mathf.Epsilon);
+                    float _random_x = Mathf.Sin(Random.Range(0.0f, angleAnp) * Mathf.Deg2Rad * Mathf.Sign((float)(2 * Random.Range(0, 2) - 1)));
+                    float _random_y = Mathf.Cos(Random.Range(0.0f, angleAnp) * Mathf.Deg2Rad);
+
+                    obj = Instantiate(bubblePrefab[j],
+                        new Vector3(Random.Range(-positionXAnp, positionXAnp), positionY, 0.0f), Quaternion.identity);
+                    obj.transform.localScale = _randomNum * new Vector3(1.0f, 1.0f, 1.0f);
+                    obj.GetComponent<Rigidbody2D>().velocity = speed * new Vector2(_random_x, _random_y);
+                }
             }
         }
-        isBubbling = false;
+        _isBubbling = false;
     }
 
-    void deleteBubblesAll(bool isPlus, bool isPlusMinus = false)
+    /// <summary>
+    /// プラスまたはマイナスのバブルを消します
+    /// </summary>
+    /// <param name="isPlus">消す属性</param>
+    /// <param name="isPlusMinus">全消しするかどうか(true;属性変更しない)</param>
+    void DeleteBubblesAll(bool isPlus, bool isPlusMinus = false)
     {
-        if (isPlus)
+        var _bubble = GameObject.FindGameObjectsWithTag(isPlus ? PLUS_BUBBLE_TAG : MINUS_BUBBLE_TAG);
+        if (_bubble.Length > 0)
         {
-            var plusBubble = GameObject.FindGameObjectsWithTag(PLUS_BUBBLE_TAG);
-            if (plusBubble.Length > 0)
+            Score += bubbleScore * _bubble.Length;
+            for (int i = 0; i < _bubble.Length; ++i)
             {
-                Score += bubbleScore * plusBubble.Length;
-                for (int i = 0; i < plusBubble.Length; ++i)
-                {
-                    GameObject.Destroy(plusBubble[i]);
-                }
+                GameObject.Destroy(_bubble[i]);
             }
         }
-        else
-        {
-            var minusBubble = GameObject.FindGameObjectsWithTag(MINUS_BUBBLE_TAG);
-            if (minusBubble.Length > 0)
-            {
-                Score += bubbleScore * minusBubble.Length;
-                for (int i = 0; i < minusBubble.Length; ++i)
-                {
-                    GameObject.Destroy(minusBubble[i]);
-                }
-            }
-        }
-        if(!isPlusMinus) ChangeBubblesHalf(isPlus);
+
+        if (!isPlusMinus) ChangeBubblesHalf(!isPlus);
     }
 
+    /// <summary>
+    /// バブルを半分だけ属性変更します
+    /// </summary>
+    /// <param name="isPlus">属性変更するバブル</param>
     void ChangeBubblesHalf(bool isPlus)
     {
-        var Bubble = isPlus ? GameObject.FindGameObjectsWithTag(MINUS_BUBBLE_TAG)
-                : GameObject.FindGameObjectsWithTag(PLUS_BUBBLE_TAG);
-        if (Bubble.Length > 0)
+        var _bubble = GameObject.FindGameObjectsWithTag(isPlus ? PLUS_BUBBLE_TAG : MINUS_BUBBLE_TAG);
+        if (_bubble.Length > 0)
         {
-            int halfBubbleLength = Bubble.Length / 2;
+            int halfBubbleLength = _bubble.Length / 2;
             for (int i = 0; i < halfBubbleLength; ++i)
             {
-                ChangeBubble(Bubble[i], isPlus);
+                ChangeBubble(_bubble[i], !isPlus);
             }
         }
     }
 
+    /// <summary>
+    /// バブルのPrefab情報を属性変更します
+    /// </summary>
+    /// <param name="bubbleObject">属性変更するバブルのPrefab</param>
+    /// <param name="isPlus">属性変更先がプラスかどうか</param>
     void ChangeBubble(GameObject bubbleObject, bool isPlus)
     {
-        if (bubbleObject)
-        {
-            bubbleObject.GetComponent<SpriteRenderer>().sprite
-                = isPlus ? plusBubbleImage : minusBubbleImage;
-            bubbleObject.tag = isPlus ? PLUS_BUBBLE_TAG : MINUS_BUBBLE_TAG;
-        }
+        // Prefabが存在しない場合は実行しない
+        if (!bubbleObject) return;
+        
+        bubbleObject.GetComponent<SpriteRenderer>().sprite = isPlus ? plusBubbleImage : minusBubbleImage;
+        bubbleObject.tag = isPlus ? PLUS_BUBBLE_TAG : MINUS_BUBBLE_TAG;
     }
 
+    /// <summary>
+    /// バブルを生成可能にします
+    /// </summary>
     public void TurnOnBubblingFlag()
     {
-        isBubbling = true;
+        _isBubbling = true;
     }
 
+    /// <summary>
+    /// 数字が加算可能な状態かどうか(=バブル生成の準備が完了しているか)を返します
+    /// </summary>
+    /// <returns>数字が加算可能であるか</returns>
     public bool ReturnStockingFlag()
     {
-        return isBubbling;
+        return _isBubbling;
     }
 }
 

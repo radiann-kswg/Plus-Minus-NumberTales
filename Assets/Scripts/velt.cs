@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class velt : MonoBehaviour
+public class Velt : MonoBehaviour
 {
     [SerializeField]
     GameDirector director;

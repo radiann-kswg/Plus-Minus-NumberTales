@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     switching sw;
     [SerializeField]
-    velt vl;
+    Velt vl;
 
     // Start is called before the first frame update
     void Start()
