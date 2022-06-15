@@ -278,7 +278,7 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     /// <param name="num">数字の値</param>
     /// <returns>指定した数字が0,目標の数字,範囲外の数字のどれかであるか</returns>
-    private bool _CheckNumberIsNotZeroOrTarger(int num)
+    private bool _CheckNumberIsNotZeroOrTarget(int num)
     {
         return num == 0 || num == -TargetNum || num == TargetNum
             || _ReturnNumImageIndex(num) < 0 || _ReturnNumImageIndex(num) >= nornalNumImage.Count;
@@ -291,7 +291,7 @@ public class GameDirector : MonoBehaviour
     public int ReturnRandomNum()
     {
         int num = 0;
-        while (_CheckNumberIsNotZeroOrTarger(num))
+        while (_CheckNumberIsNotZeroOrTarget(num))
         {
             /* レベルデザインに基づく乱数生成 */
             if (Level <= 3)
@@ -453,15 +453,23 @@ public class GameDirector : MonoBehaviour
                 }
             }
         }
-        /* 目標の数字が生成されていないときの処理(バースト以外) */
-        else if (!isBurst)
+        /* 目標の数字が生成されていないときの処理 */
+        else
         {
-            // SEを再生
-            SE.instance.PlayClip(2);
-            // バブルを発生
-            if (nowNum != 0)
+            // 連鎖数をリセット
+            _ResetChain(true, false);
+            _ResetChain(false, false);
+
+            // 加点もバーストもされない場合の処理
+            if (!isBurst)
             {
-                BubbleCloning(nowNum > 0);
+                // SEを再生
+                SE.instance.PlayClip(2);
+                // バブルを発生
+                if (nowNum != 0)
+                {
+                    BubbleCloning(nowNum > 0);
+                }
             }
         }
     }
