@@ -1650,7 +1650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1353274809}
   levelText: {fileID: 396159024}
-  numImage:
+  nornalNumImage:
   - {fileID: 21300000, guid: 4b2b30f1087ddf244b202b3330a3c98c, type: 3}
   - {fileID: 21300000, guid: f0e34b81c53fd7348b22fef42bbd095d, type: 3}
   - {fileID: 21300000, guid: e4ff6927d816a67489e245c7e13cc061, type: 3}
@@ -1702,14 +1702,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 112f94a4ec6337948a9f8c5bdf760d0a, type: 3}
   - {fileID: 8300000, guid: 57ddaf33b9a103e4db80c1d86f5fbb2f, type: 3}
   vl: {fileID: 1675519447}
-  Target_Num: 5
+  TargetNum: 5
   Score: 0
   Level: 1
   fiveScore: 200
   plusMinusFiveScore: 1000
   levelDist: 2000
   bubbleScore: 50
-  bubble_Prefab:
+  bubblePrefab:
   - {fileID: 8349054624744329370, guid: 5aeab13864c2cc0499321150f9ab0e08, type: 3}
   - {fileID: 8427653658188357444, guid: ec5a27d857d12d2448e03684fe6f5178, type: 3}
   nowNumImage: {fileID: 372677921}
@@ -1720,7 +1720,7 @@ MonoBehaviour:
   targetImage_plus: {fileID: 2127786368}
   targetImage_minus: {fileID: 527312446}
   characterDispImage: {fileID: 511228889}
-  audioSource: {fileID: 519420030}
+  bgmAudioSource: {fileID: 519420030}
   plusBubbleImage: {fileID: 21300000, guid: 946a962ebc1982841adaead658a8858c, type: 3}
   minusBubbleImage: {fileID: 21300000, guid: 61625f8e4ac76df408c559433f91872f, type: 3}
   resultSceneName: ResultScene

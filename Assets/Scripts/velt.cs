@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class velt : MonoBehaviour
+public class Velt : MonoBehaviour
 {
     [SerializeField]
     GameDirector director;
     [SerializeField]
-    switching sw;
+    Switcher sw;
     [SerializeField]
     int steps = 4;
 
@@ -32,7 +32,7 @@ public class velt : MonoBehaviour
         {
             if (director.ReturnStockingFlag())
             {
-                director.EnterNum2Stock(sw.isRight);
+                director.EnterNum2Stock(sw.IsRight);
                 director.TurnOffHoldFlag();
                 director.SwitchNextNum();
                 value = ReturnMaxValue();

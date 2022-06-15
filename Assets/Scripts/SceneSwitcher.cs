@@ -19,7 +19,7 @@ public class SceneSwitcher : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetButtonDown("Submit"))
             {
                 SE.instance.PlayClip(0);
                 TransitionManager.instance.FadeOut();
