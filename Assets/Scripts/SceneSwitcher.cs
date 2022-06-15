@@ -8,6 +8,9 @@ public class SceneSwitcher : MonoBehaviour
     [SerializeField]
     string nextSceneName;
 
+    [SerializeField]
+    HyakkaCommandTrigger hyakkaC;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +24,17 @@ public class SceneSwitcher : MonoBehaviour
         {
             if (Input.GetButtonDown("Submit"))
             {
-                SE.instance.PlayClip(0);
-                TransitionManager.instance.FadeOut();
+                if (!hyakkaC)
+                {
+                    SE.instance.PlayClip(0);
+                    TransitionManager.instance.FadeOut();
+                }
+                else
+                {
+                    SE.instance.PlayClip(hyakkaC.IsSuccessInput() ? 5 : 0);
+                    Messerger.instance.IsUnlockedNo0 = hyakkaC.IsSuccessInput();
+                    TransitionManager.instance.FadeOut();
+                }
             }
         }
 

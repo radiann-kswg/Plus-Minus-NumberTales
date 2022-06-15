@@ -26,8 +26,10 @@ public class PlayerSelector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TransitionManager.instance.Reset();
+        isUnlockedNo0 = Messerger.instance.IsUnlockedNo0;
+
         changeCharacterDisp(true);
+        TransitionManager.instance.Reset();
     }
 
     // Update is called once per frame
@@ -84,10 +86,12 @@ public class PlayerSelector : MonoBehaviour
 
     void changeCharacterDisp(bool isInit = false)
     {
+        characterCursol[0].gameObject.SetActive(isUnlockedNo0);
         characterDispImage.sprite = Messerger.instance.charactersImage[target];
         characterCursol[target].color = new Color(255f, 255f, 0f);
         if (isInit)
         {
+
             for(int i = isUnlockedNo0 ? 0 : 1; i < characterCursol.Count; ++i)
             {
                 if(i != target) characterCursol[i].color = new Color(191f, 191f, 191f);
