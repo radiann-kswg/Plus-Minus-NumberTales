@@ -49,6 +49,11 @@ public class GameDirector : MonoBehaviour
     public int TargetNum = 5;
 
     /// <summary>
+    /// ナンバーゼロモード(デフォルト:無効(false))
+    /// </summary>
+    bool no0Mode = false;
+
+    /// <summary>
     /// スコア
     /// </summary>
     public int Score = 0;
@@ -177,11 +182,11 @@ public class GameDirector : MonoBehaviour
     {
         _InitTargetName();
 
-        targetImage_minus.sprite = nornalNumImage[_ReturnNumImageIndex(-TargetNum)] = targetNumImage[_ReturnNumImageIndex(-TargetNum)];
-        targetImage_plus.sprite  = nornalNumImage[_ReturnNumImageIndex( TargetNum)] = targetNumImage[_ReturnNumImageIndex( TargetNum)];
+        _SwitchNumSpriteOfTarget();
 
-        characterDispImage.sprite = Messerger.instance.charactersImage[TargetNum];
-        bgmAudioSource.clip = characterThemeClip[TargetNum];
+        int _characterID = !no0Mode ? TargetNum : 0;
+        characterDispImage.sprite = Messerger.instance.charactersImage[_characterID];
+        bgmAudioSource.clip = characterThemeClip[_characterID];
 
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
@@ -230,7 +235,13 @@ public class GameDirector : MonoBehaviour
         // 負の値を正に(絶対値化)
         TargetNum *= TargetNum < 0 ? -1 : 1;
         // 0だった時の処理（0番(シークレット)のキャラを解禁しないのであれば最小値:1に）
-        TargetNum = TargetNum == 0 ? 1 : TargetNum;
+        TargetNum = TargetNum == 0 && !Messerger.instance.IsUnlockedNo0 ? 1 : TargetNum;
+        // 【No0モード】（0番(シークレット)のキャラを解禁するのであればNo0モードを解禁してランダムな数字に）
+        if(TargetNum == 0 && Messerger.instance.IsUnlockedNo0)
+        {
+            no0Mode = true;
+            TargetNum = ReturnRandomTargetNum();
+        }
         // 2桁以上の値を最大値:9に
         TargetNum = TargetNum >= 10 ? 9 : TargetNum;
     }
@@ -278,10 +289,21 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     /// <param name="num">数字の値</param>
     /// <returns>指定した数字が0,目標の数字,範囲外の数字のどれかであるか</returns>
-    private bool _CheckNumberIsNotZeroOrTarger(int num)
+    private bool _CheckNumberIsNotZeroOrTarget(int num)
     {
-        return num == 0 || num == -TargetNum || num == TargetNum
+        return num == 0 || num * num == TargetNum * TargetNum
             || _ReturnNumImageIndex(num) < 0 || _ReturnNumImageIndex(num) >= nornalNumImage.Count;
+    }
+
+    /// <summary>
+    /// 【No0モード】指定した数字が表示されている数字と0以外でないか、指定された数字の画像リストの範囲内の値かどうかを判定します
+    /// </summary>
+    /// <param name="num">数字の値</param>
+    /// <returns>指定した数字が0,表示中の数字,範囲外の数字のどれかであるか</returns>
+    private bool _CheckTargetNumber(int num)
+    {
+        return _CheckNumberIsNotZeroOrTarget(num)
+            || num * num == leftNum * leftNum || num * num == rightNum * rightNum;
     }
 
     /// <summary>
@@ -291,7 +313,7 @@ public class GameDirector : MonoBehaviour
     public int ReturnRandomNum()
     {
         int num = 0;
-        while (_CheckNumberIsNotZeroOrTarger(num))
+        while (_CheckNumberIsNotZeroOrTarget(num))
         {
             /* レベルデザインに基づく乱数生成 */
             if (Level <= 3)
@@ -307,6 +329,60 @@ public class GameDirector : MonoBehaviour
             num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(12 + Level) / (float)Level) * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
         }
         return num;
+    }
+
+    /// <summary>
+    /// 【No0モード】レベルデザインに応じて目標の数字の絶対値を返します
+    /// </summary>
+    /// <returns>抽選結果</returns>
+    int ReturnRandomTargetNum()
+    {
+        int num = 0;
+        while (_CheckTargetNumber(num))
+        {
+            /* レベルデザインに基づく乱数生成 */
+            if (Level < 8)
+            {
+                num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.25f) * 7.0f) + 1);
+                continue;
+            }
+            if (Level < 20)
+            {
+                num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(8 + Level) / (float)Level) * 8.0f) + 1);
+                continue;
+            }
+            num = (Mathf.FloorToInt(Random.value * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+        }
+        return num;
+    }
+
+    /// <summary>
+    /// 【No0モード】目標の数字のスプライトを差し替えます
+    /// </summary>
+    private void _SwitchNumSpriteOfTarget()
+    {
+        Sprite preSprite_minus = nornalNumImage[_ReturnNumImageIndex(-TargetNum)];
+        Sprite preSprite_plus = nornalNumImage[_ReturnNumImageIndex(TargetNum)];
+        targetImage_minus.sprite = nornalNumImage[_ReturnNumImageIndex(-TargetNum)] = targetNumImage[_ReturnNumImageIndex(-TargetNum)];
+        targetImage_plus.sprite = nornalNumImage[_ReturnNumImageIndex(TargetNum)] = targetNumImage[_ReturnNumImageIndex(TargetNum)];
+        targetNumImage[_ReturnNumImageIndex(-TargetNum)] = preSprite_minus;
+        targetNumImage[_ReturnNumImageIndex(TargetNum)] = preSprite_plus;
+    }
+
+    /// <summary>
+    /// 【No0モード】目標の数字を更新します
+    /// </summary>
+    /// <param name="isInit">初期化かどうか</param>
+    private void _UpdateTargetNum(bool isInit = false)
+    {
+        _SwitchNumSpriteOfTarget();
+        if (!isInit)
+        {
+            if (!no0Mode) return;
+
+            TargetNum = ReturnRandomTargetNum();
+            _SwitchNumSpriteOfTarget();
+        }
     }
 
     /// <summary>
@@ -385,7 +461,15 @@ public class GameDirector : MonoBehaviour
         if (isRight) _rightChainNum = 0;
         else _leftChainNum = 0;
 
-        if (isSetNum2Random) _SetSelectedNum(isRight, ReturnRandomNum());
+        if (isSetNum2Random)
+        {
+            _SetSelectedNum(isRight, ReturnRandomNum());
+
+            /* 【No0モード】目標の数字を更新 */
+            if (!no0Mode) return;
+            _UpdateTargetNum();
+            //_ResetChain(!isRight, false);
+        }
     }
 
     /// <summary>
@@ -453,15 +537,23 @@ public class GameDirector : MonoBehaviour
                 }
             }
         }
-        /* 目標の数字が生成されていないときの処理(バースト以外) */
-        else if (!isBurst)
+        /* 目標の数字が生成されていないときの処理 */
+        else
         {
-            // SEを再生
-            SE.instance.PlayClip(2);
-            // バブルを発生
-            if (nowNum != 0)
+            // 連鎖数をリセット
+            _ResetChain(true, false);
+            _ResetChain(false, false);
+
+            // 加点もバーストもされない場合の処理
+            if (!isBurst)
             {
-                BubbleCloning(nowNum > 0);
+                // SEを再生
+                SE.instance.PlayClip(2);
+                // バブルを発生
+                if (nowNum != 0)
+                {
+                    BubbleCloning(nowNum > 0);
+                }
             }
         }
     }

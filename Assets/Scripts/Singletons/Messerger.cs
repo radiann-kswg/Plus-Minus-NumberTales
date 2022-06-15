@@ -24,6 +24,7 @@ public class Messerger : MonoBehaviour
     public int ScoreMessage = 0;
     public int LevelMessage = 1;
     public int TargetNumMessage = 5;
+    public bool IsUnlockedNo0 = false;
 
     // Start is called before the first frame update
     void Start()
