@@ -6,10 +6,10 @@
 [SerializeField] velt vl;
 // Sliderの参照
 
-/* velt.cs …数字を流すSliderの処理 */
+/* Velt.cs …数字を流すSliderの処理 */
 [SerializeField] GameDirector director;
 // ゲームディレクターの参照
-[SerializeField] switching sw;
+[SerializeField] Switcher sw;
 // スイッチ(切り替え器)用スクリプトの参照
 public Slider slider;
 // 動かすSliderオブジェクト
@@ -18,7 +18,7 @@ public Slider slider;
 float value = 1.00f;
 // Sliderのvalue値（処理用）
 
-/* switching.cs …左右を切り返す処理 */
+/* Switcher.cs …左右を切り返す処理 */
 [SerializeField] GameObject leftSwitch;
 // 左に切り替えたときに表示するオブジェクト
 [SerializeField] GameObject rightSwitch;

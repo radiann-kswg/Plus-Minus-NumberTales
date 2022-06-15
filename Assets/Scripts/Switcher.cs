@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class switching : MonoBehaviour
+public class Switcher : MonoBehaviour
 {
     [SerializeField]
     GameObject leftSwitch, rightSwitch;
 
-    public bool isRight = false;
+    public bool IsRight = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +18,12 @@ public class switching : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        leftSwitch.SetActive(!isRight);
-        rightSwitch.SetActive(isRight);
+        leftSwitch.SetActive(!IsRight);
+        rightSwitch.SetActive(IsRight);
     }
 
-    public void Switching(bool isRight0)
+    public void Switching(bool isRight_new)
     {
-        isRight = isRight0;
+        IsRight = isRight_new;
     }
 }

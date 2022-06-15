@@ -20,6 +20,9 @@ public class PlayerSelector : MonoBehaviour
     [SerializeField]
     string mainSceneName;
 
+    [SerializeField]
+    const float AXIS_THRESHOLD = 0.7f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,21 +35,21 @@ public class PlayerSelector : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") < -AXIS_THRESHOLD)
             {
                 changeCharacter(false);
 
                 SE.instance.PlayClip(1);
             }
 
-            if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") >  AXIS_THRESHOLD)
             {
                 changeCharacter(true);
 
                 SE.instance.PlayClip(1);
             }
 
-            if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetButtonDown("Submit"))
             {
                 SE.instance.PlayClip(0);
                 Messerger.instance.TargetNumMessage = target;

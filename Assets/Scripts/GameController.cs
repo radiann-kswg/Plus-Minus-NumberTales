@@ -8,9 +8,12 @@ public class GameController : MonoBehaviour
     [SerializeField]
     GameDirector director;
     [SerializeField]
-    switching sw;
+    Switcher sw;
     [SerializeField]
     Velt vl;
+
+    [SerializeField]
+    const float AXIS_THRESHOLD = 0.7f;
 
     // Start is called before the first frame update
     void Start()
@@ -21,26 +24,26 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") < -AXIS_THRESHOLD)
         {
             sw.Switching(false);
 
             SE.instance.PlayClip(1);
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") >  AXIS_THRESHOLD)
         {
             sw.Switching(true);
 
             SE.instance.PlayClip(1);
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetButtonDown("Fire3"))
         {
             director.HoldNum();
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetButtonDown("Fire1"))
         {
             vl.HardDrop();
         }
