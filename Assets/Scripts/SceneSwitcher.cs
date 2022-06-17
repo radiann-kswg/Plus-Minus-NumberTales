@@ -11,6 +11,9 @@ public class SceneSwitcher : MonoBehaviour
     [SerializeField]
     HyakkaCommandTrigger hyakkaC;
 
+    [SerializeField]
+    string switchButtonName = "Submit";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +25,7 @@ public class SceneSwitcher : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            if (Input.GetButtonDown("Submit"))
+            if (Input.GetButtonDown(switchButtonName))
             {
                 if (!hyakkaC)
                 {
