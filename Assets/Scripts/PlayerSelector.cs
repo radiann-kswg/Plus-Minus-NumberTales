@@ -23,6 +23,8 @@ public class PlayerSelector : MonoBehaviour
     [SerializeField]
     const float AXIS_THRESHOLD = 0.7f;
 
+    bool isStartingGame = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +55,7 @@ public class PlayerSelector : MonoBehaviour
 
             if (Input.GetButtonDown("Submit"))
             {
+                isStartingGame = true;
                 SE.instance.PlayClip(0);
                 Messerger.instance.TargetNumMessage = target;
 
@@ -60,7 +63,7 @@ public class PlayerSelector : MonoBehaviour
             }
         }
 
-        if (TransitionManager.instance.IsReadyToNextSceneNow())
+        if (TransitionManager.instance.IsReadyToNextSceneNow() && isStartingGame)
         {
             SceneManager.LoadScene(mainSceneName);
         }
