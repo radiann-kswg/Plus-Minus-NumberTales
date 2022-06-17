@@ -1951,7 +1951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftSwitch: {fileID: 1831043341}
   rightSwitch: {fileID: 2116305592}
-  isRight: 0
+  IsRight: 0
 --- !u!1 &1096572580
 GameObject:
   m_ObjectHideFlags: 0
