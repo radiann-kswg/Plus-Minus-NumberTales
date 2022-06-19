@@ -22,6 +22,11 @@ public class PlayerSelector : MonoBehaviour
 
     [SerializeField]
     const float AXIS_THRESHOLD = 0.7f;
+    
+    [SerializeField]
+    Color nonSelectionColor = new Color(255f, 255f, 255f);
+    [SerializeField]
+    Color selectedColor = new Color(255f, 255f, 0f);
 
     bool isStartingGame = false;
 
@@ -71,7 +76,7 @@ public class PlayerSelector : MonoBehaviour
 
     void changeCharacter(bool isNext)
     {
-        characterCursol[target].color = new Color(191f, 191f, 191f);
+        characterCursol[target].color = nonSelectionColor;
 
         if (isNext)
         {
@@ -91,13 +96,13 @@ public class PlayerSelector : MonoBehaviour
     {
         characterCursol[0].gameObject.SetActive(isUnlockedNo0);
         characterDispImage.sprite = Messerger.instance.charactersImage[target];
-        characterCursol[target].color = new Color(255f, 255f, 0f);
+        characterCursol[target].color = selectedColor;
         if (isInit)
         {
 
             for(int i = isUnlockedNo0 ? 0 : 1; i < characterCursol.Count; ++i)
             {
-                if(i != target) characterCursol[i].color = new Color(191f, 191f, 191f);
+                if (i != target) characterCursol[i].color = nonSelectionColor;
             }
         }
     }

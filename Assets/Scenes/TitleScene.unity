@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 207956442}
   - component: {fileID: 207956444}
   - component: {fileID: 207956443}
+  - component: {fileID: 207956445}
   m_Layer: 5
   m_Name: InfoLabel
   m_TagString: Untagged
@@ -261,6 +262,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 207956441}
   m_CullTransparentMesh: 0
+--- !u!114 &207956445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207956441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55bed18a707dddc48b58397ad135cd2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blinkTime: 2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,6 +669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSceneName: CharacterSelectScene
   hyakkaC: {fileID: 1310626112}
+  switchButtonName: Submit
 --- !u!4 &1310626111
 Transform:
   m_ObjectHideFlags: 0
