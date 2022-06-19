@@ -482,6 +482,7 @@ public class GameDirector : MonoBehaviour
         if (!_isBubbling) return;
 
         bool isBurst = false; // バーストしたか
+        int _prevNum = _ReturnSelectedNum(isEnter2Right);
         int _addedNum = _ReturnSelectedNum(isEnter2Right) + nowNum;
         if (_CheckSqares(_addedNum) >= 100)
         {
@@ -530,6 +531,10 @@ public class GameDirector : MonoBehaviour
                 {
                     Score += fiveScore;
                     _FlushNumAndHalfBubble(_isRightBecomeFive);
+
+                    // かつ加算によって数字が変わった場合は連鎖数をリセット
+                    if (_isRightBecomeFive == isEnter2Right && _prevNum != _addedNum)
+                        _ResetChain(_isRightBecomeFive, false);
                 }
                 else
                 {
