@@ -35,17 +35,17 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire3") || GetAxisDown("Vertical", true))
+        if (Input.GetButtonDown("Fire3"))
         {
             director.HoldNum();
         }
 
-        if (Input.GetButtonDown("Fire1") || GetAxisDown("Vertical", false))
+        if (Input.GetButtonDown("Fire1"))
         {
             vl.HardDrop();
         }
 
-        if(isPressed && !(GetAxisHold("Horizontal") || GetAxisHold("Vertical")))
+        if(isPressed && !GetAxisHold("Horizontal"))
         {
             isPressed = false;
         }
