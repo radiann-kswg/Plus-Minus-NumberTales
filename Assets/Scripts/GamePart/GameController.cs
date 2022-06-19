@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     const float AXIS_THRESHOLD = 0.7f;
+    bool isPressed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,28 +25,46 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") < -AXIS_THRESHOLD)
+        foreach (bool isPositive in new bool[] { false, true })
         {
-            sw.Switching(false);
+            if (Input.GetButtonDown("Horizontal") || GetAxisDown("Horizontal", isPositive))
+            {
+                sw.Switching(isPositive);
 
-            SE.instance.PlayClip(1);
+                SE.instance.PlayClip(1);
+            }
         }
 
-        if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") >  AXIS_THRESHOLD)
-        {
-            sw.Switching(true);
-
-            SE.instance.PlayClip(1);
-        }
-
-        if (Input.GetButtonDown("Fire3"))
+        if (Input.GetButtonDown("Fire3") || GetAxisDown("Vertical", true))
         {
             director.HoldNum();
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") || GetAxisDown("Vertical", false))
         {
             vl.HardDrop();
         }
+
+        if(isPressed && !(GetAxisHold("Horizontal") || GetAxisHold("Vertical")))
+        {
+            isPressed = false;
+        }
+    }
+
+    bool GetAxisHold(string name)
+    {
+        return Input.GetAxis(name) > AXIS_THRESHOLD || Input.GetAxis(name) < -AXIS_THRESHOLD;
+    }
+
+    bool GetAxisDown(string name, bool isPositive)
+    {
+        if (isPressed) return false;
+        bool _res = false;
+        if (isPositive ? Input.GetAxis(name) > AXIS_THRESHOLD : Input.GetAxis(name) < -AXIS_THRESHOLD)
+        {
+            isPressed = true;
+            _res = true;
+        }
+        return _res;
     }
 }

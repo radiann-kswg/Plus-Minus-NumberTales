@@ -22,6 +22,7 @@ public class PlayerSelector : MonoBehaviour
 
     [SerializeField]
     const float AXIS_THRESHOLD = 0.7f;
+    bool isPressed = false;
     
     [SerializeField]
     Color nonSelectionColor = new Color(255f, 255f, 255f);
@@ -44,18 +45,14 @@ public class PlayerSelector : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") < -AXIS_THRESHOLD)
+            foreach (bool isPositive in new bool[] { false, true })
             {
-                changeCharacter(false);
+                if (Input.GetButtonDown("Horizontal") || GetAxisDown("Horizontal", isPositive))
+                {
+                    changeCharacter(isPositive);
 
-                SE.instance.PlayClip(1);
-            }
-
-            if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") >  AXIS_THRESHOLD)
-            {
-                changeCharacter(true);
-
-                SE.instance.PlayClip(1);
+                    SE.instance.PlayClip(1);
+                }
             }
 
             if (Input.GetButtonDown("Submit"))
@@ -68,10 +65,32 @@ public class PlayerSelector : MonoBehaviour
             }
         }
 
+        if (isPressed && !GetAxisHold("Horizontal"))
+        {
+            isPressed = false;
+        }
+
         if (TransitionManager.instance.IsReadyToNextSceneNow() && isStartingGame)
         {
             SceneManager.LoadScene(mainSceneName);
         }
+    }
+
+    bool GetAxisHold(string name)
+    {
+        return Input.GetAxis(name) > AXIS_THRESHOLD || Input.GetAxis(name) < -AXIS_THRESHOLD;
+    }
+
+    bool GetAxisDown(string name, bool isPositive)
+    {
+        if (isPressed) return false;
+        bool _res = false;
+        if (isPositive ? Input.GetAxis(name) > AXIS_THRESHOLD : Input.GetAxis(name) < -AXIS_THRESHOLD)
+        {
+            isPressed = true;
+            _res = true;
+        }
+        return _res;
     }
 
     void changeCharacter(bool isNext)
