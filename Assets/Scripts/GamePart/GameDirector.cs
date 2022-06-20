@@ -24,7 +24,7 @@ public class GameDirector : MonoBehaviour
     /// 通常の数字を表示する画像(Sprite)リスト
     /// </summary>
     [SerializeField]
-    List<Sprite> nornalNumImage = new List<Sprite>();
+    List<Sprite> normalNumImage = new List<Sprite>();
     /// <summary>
     /// 目標の数字を表示する画像(Sprite)リスト
     /// </summary>
@@ -264,8 +264,8 @@ public class GameDirector : MonoBehaviour
     private void _UpdateNumImage(bool isRight)
     {
         int _num = isRight ? rightNum : leftNum;
-        if (_ReturnNumImageIndex(_num) >= 0 && _ReturnNumImageIndex(_num) < nornalNumImage.Count)
-            (isRight ? rightNumImage : leftNumImage).sprite = nornalNumImage[_ReturnNumImageIndex(_num)];
+        if (_ReturnNumImageIndex(_num) >= 0 && _ReturnNumImageIndex(_num) < normalNumImage.Count)
+            (isRight ? rightNumImage : leftNumImage).sprite = normalNumImage[_ReturnNumImageIndex(_num)];
     }
 
     /// <summary>
@@ -273,13 +273,13 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     private void _UpdateUIs()
     {
-        nowNumImage.sprite = nornalNumImage[_ReturnNumImageIndex(nowNum)];
-        nextNumImage.sprite = nornalNumImage[_ReturnNumImageIndex(nextNum)];
+        nowNumImage.sprite = normalNumImage[_ReturnNumImageIndex(nowNum)];
+        nextNumImage.sprite = normalNumImage[_ReturnNumImageIndex(nextNum)];
         _UpdateNumImage(false);
         _UpdateNumImage(true);
         scoreText.text = Score.ToString();
         if (isFirstHolded)
-            holdNumImage.sprite = nornalNumImage[_ReturnNumImageIndex(holdNum)];
+            holdNumImage.sprite = normalNumImage[_ReturnNumImageIndex(holdNum)];
         Level = Score / levelDist + 1;
         levelText.text = Level.ToString();
     }
@@ -292,7 +292,7 @@ public class GameDirector : MonoBehaviour
     private bool _CheckNumberIsNotZeroOrTarget(int num)
     {
         return num == 0 || num * num == TargetNum * TargetNum
-            || _ReturnNumImageIndex(num) < 0 || _ReturnNumImageIndex(num) >= nornalNumImage.Count;
+            || _ReturnNumImageIndex(num) < 0 || _ReturnNumImageIndex(num) >= normalNumImage.Count;
     }
 
     /// <summary>
@@ -356,15 +356,27 @@ public class GameDirector : MonoBehaviour
         return num;
     }
 
+    private Sprite _ReturnNumImage(List<Sprite> numImages, int targetNum)
+    {
+        return numImages[_ReturnNumImageIndex(targetNum)];
+    }
+
+    private Sprite _SwitchNumSprite2Sprite(List<Sprite> fromImages, List<Sprite> toImages, int targetNum)
+    {
+        int _index = _ReturnNumImageIndex(targetNum);
+        toImages[_index] = fromImages[_index];
+        return fromImages[_index];
+    }
+
     /// <summary>
     /// 【No0モード】目標の数字のスプライトを差し替えます
     /// </summary>
     private void _SwitchNumSpriteOfTarget()
     {
-        Sprite preSprite_minus = nornalNumImage[_ReturnNumImageIndex(-TargetNum)];
-        Sprite preSprite_plus = nornalNumImage[_ReturnNumImageIndex(TargetNum)];
-        targetImage_minus.sprite = nornalNumImage[_ReturnNumImageIndex(-TargetNum)] = targetNumImage[_ReturnNumImageIndex(-TargetNum)];
-        targetImage_plus.sprite = nornalNumImage[_ReturnNumImageIndex(TargetNum)] = targetNumImage[_ReturnNumImageIndex(TargetNum)];
+        Sprite preSprite_minus = _ReturnNumImage(normalNumImage, -TargetNum);
+        Sprite preSprite_plus = _ReturnNumImage(normalNumImage, TargetNum);
+        targetImage_minus.sprite = _SwitchNumSprite2Sprite(targetNumImage, normalNumImage, -TargetNum);
+        targetImage_plus.sprite = _SwitchNumSprite2Sprite(targetNumImage, normalNumImage, TargetNum);
         targetNumImage[_ReturnNumImageIndex(-TargetNum)] = preSprite_minus;
         targetNumImage[_ReturnNumImageIndex(TargetNum)] = preSprite_plus;
     }
@@ -529,12 +541,13 @@ public class GameDirector : MonoBehaviour
             {
                 if (IsFive(true, _isRightBecomeFive))
                 {
-                    Score += fiveScore;
-                    _FlushNumAndHalfBubble(_isRightBecomeFive);
-
                     // かつ加算によって数字が変わった場合は連鎖数をリセット
                     if (_isRightBecomeFive == isEnter2Right && _prevNum != _addedNum)
                         _ResetChain(_isRightBecomeFive, false);
+
+                    Score += fiveScore;
+                    _FlushNumAndHalfBubble(_isRightBecomeFive);
+
                 }
                 else
                 {
