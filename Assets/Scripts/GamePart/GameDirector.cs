@@ -529,12 +529,13 @@ public class GameDirector : MonoBehaviour
             {
                 if (IsFive(true, _isRightBecomeFive))
                 {
-                    Score += fiveScore;
-                    _FlushNumAndHalfBubble(_isRightBecomeFive);
-
                     // かつ加算によって数字が変わった場合は連鎖数をリセット
                     if (_isRightBecomeFive == isEnter2Right && _prevNum != _addedNum)
                         _ResetChain(_isRightBecomeFive, false);
+
+                    Score += fiveScore;
+                    _FlushNumAndHalfBubble(_isRightBecomeFive);
+
                 }
                 else
                 {
