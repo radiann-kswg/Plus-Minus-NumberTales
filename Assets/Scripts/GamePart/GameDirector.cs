@@ -139,10 +139,10 @@ public class GameDirector : MonoBehaviour
     bool isHolded = false;
 
     /// <summary>
-    /// それぞれの数字を表示するImageコンポーネント
+    /// それぞれの数字を表示するNumberImageコンポーネント
     /// </summary>
     [SerializeField]
-    Image nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage, targetImage_plus, targetImage_minus;
+    NumberImage nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage, targetImage_plus, targetImage_minus;
     /// <summary>
     /// キャラクターを表示するImageコンポーネント
     /// </summary>
@@ -265,7 +265,7 @@ public class GameDirector : MonoBehaviour
     {
         int _num = isRight ? rightNum : leftNum;
         if (_ReturnNumImageIndex(_num) >= 0 && _ReturnNumImageIndex(_num) < normalNumImage.Count)
-            (isRight ? rightNumImage : leftNumImage).sprite = normalNumImage[_ReturnNumImageIndex(_num)];
+            (isRight ? rightNumImage : leftNumImage).SetNumImage(normalNumImage[_ReturnNumImageIndex(_num)]);
     }
 
     /// <summary>
@@ -273,13 +273,13 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     private void _UpdateUIs()
     {
-        nowNumImage.sprite = normalNumImage[_ReturnNumImageIndex(nowNum)];
-        nextNumImage.sprite = normalNumImage[_ReturnNumImageIndex(nextNum)];
+        nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
+        nextNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nextNum)]);
         _UpdateNumImage(false);
         _UpdateNumImage(true);
         scoreText.text = Score.ToString();
         if (isFirstHolded)
-            holdNumImage.sprite = normalNumImage[_ReturnNumImageIndex(holdNum)];
+            holdNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(holdNum)]);
         Level = Score / levelDist + 1;
         levelText.text = Level.ToString();
     }
@@ -375,8 +375,8 @@ public class GameDirector : MonoBehaviour
     {
         Sprite preSprite_minus = _ReturnNumImage(normalNumImage, -TargetNum);
         Sprite preSprite_plus = _ReturnNumImage(normalNumImage, TargetNum);
-        targetImage_minus.sprite = _SwitchNumSprite2Sprite(targetNumImage, normalNumImage, -TargetNum);
-        targetImage_plus.sprite = _SwitchNumSprite2Sprite(targetNumImage, normalNumImage, TargetNum);
+        targetImage_minus.SetNumImage(_SwitchNumSprite2Sprite(targetNumImage, normalNumImage, -TargetNum));
+        targetImage_plus.SetNumImage(_SwitchNumSprite2Sprite(targetNumImage, normalNumImage, TargetNum));
         targetNumImage[_ReturnNumImageIndex(-TargetNum)] = preSprite_minus;
         targetNumImage[_ReturnNumImageIndex(TargetNum)] = preSprite_plus;
     }
