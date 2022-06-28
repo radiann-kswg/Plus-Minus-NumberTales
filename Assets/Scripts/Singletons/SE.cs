@@ -26,7 +26,7 @@ public class SE : MonoBehaviour
 
     public void PlayClip(int clipID)
     {
-        source.Stop();
+        //source.Stop();
         source.clip = clips[clipID];
         source.Play();
     }

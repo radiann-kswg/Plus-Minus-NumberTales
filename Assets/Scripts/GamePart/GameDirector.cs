@@ -139,10 +139,10 @@ public class GameDirector : MonoBehaviour
     bool isHolded = false;
 
     /// <summary>
-    /// それぞれの数字を表示するImageコンポーネント
+    /// それぞれの数字を表示するNumberImageコンポーネント
     /// </summary>
     [SerializeField]
-    Image nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage, targetImage_plus, targetImage_minus;
+    NumberImage nowNumImage, nextNumImage, leftNumImage, rightNumImage, holdNumImage, targetImage_plus, targetImage_minus;
     /// <summary>
     /// キャラクターを表示するImageコンポーネント
     /// </summary>
@@ -191,7 +191,7 @@ public class GameDirector : MonoBehaviour
         nowNum = ReturnRandomNum();
         nextNum = ReturnRandomNum();
 
-        _UpdateUIs();
+        _InitUIs();
 
         TransitionManager.instance.Reset();
         bgmAudioSource.Play();
@@ -203,11 +203,7 @@ public class GameDirector : MonoBehaviour
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
 
-            if (!isGameOver)
-            {
-                _UpdateUIs();
-            }
-            else
+            if (isGameOver)
             {
                 /* ゲームオーバー(リザルト画面へ) */
                 SE.instance.PlayClip(3);
@@ -221,6 +217,16 @@ public class GameDirector : MonoBehaviour
         {
             SceneManager.LoadScene(resultSceneName);
         }
+    }
+
+    /// <summary>
+    /// UIを初期化します
+    /// </summary>
+    private void _InitUIs()
+    {
+        _UpdateUIs();
+        _UpdateNumImage(true);
+        _UpdateNumImage(false);
     }
 
     /// <summary>
@@ -265,7 +271,7 @@ public class GameDirector : MonoBehaviour
     {
         int _num = isRight ? rightNum : leftNum;
         if (_ReturnNumImageIndex(_num) >= 0 && _ReturnNumImageIndex(_num) < normalNumImage.Count)
-            (isRight ? rightNumImage : leftNumImage).sprite = normalNumImage[_ReturnNumImageIndex(_num)];
+            (isRight ? rightNumImage : leftNumImage).SetNumImage(normalNumImage[_ReturnNumImageIndex(_num)]);
     }
 
     /// <summary>
@@ -273,13 +279,9 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     private void _UpdateUIs()
     {
-        nowNumImage.sprite = normalNumImage[_ReturnNumImageIndex(nowNum)];
-        nextNumImage.sprite = normalNumImage[_ReturnNumImageIndex(nextNum)];
-        _UpdateNumImage(false);
-        _UpdateNumImage(true);
+        nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
+        nextNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nextNum)]);
         scoreText.text = Score.ToString();
-        if (isFirstHolded)
-            holdNumImage.sprite = normalNumImage[_ReturnNumImageIndex(holdNum)];
         Level = Score / levelDist + 1;
         levelText.text = Level.ToString();
     }
@@ -375,8 +377,8 @@ public class GameDirector : MonoBehaviour
     {
         Sprite preSprite_minus = _ReturnNumImage(normalNumImage, -TargetNum);
         Sprite preSprite_plus = _ReturnNumImage(normalNumImage, TargetNum);
-        targetImage_minus.sprite = _SwitchNumSprite2Sprite(targetNumImage, normalNumImage, -TargetNum);
-        targetImage_plus.sprite = _SwitchNumSprite2Sprite(targetNumImage, normalNumImage, TargetNum);
+        targetImage_minus.SetNumImage(_SwitchNumSprite2Sprite(targetNumImage, normalNumImage, -TargetNum));
+        targetImage_plus.SetNumImage(_SwitchNumSprite2Sprite(targetNumImage, normalNumImage, TargetNum));
         targetNumImage[_ReturnNumImageIndex(-TargetNum)] = preSprite_minus;
         targetNumImage[_ReturnNumImageIndex(TargetNum)] = preSprite_plus;
     }
@@ -404,6 +406,8 @@ public class GameDirector : MonoBehaviour
     {
         nowNum = nextNum;
         nextNum = ReturnRandomNum();
+        // UIを更新
+        _UpdateUIs();
     }
 
     /// <summary>
@@ -477,6 +481,9 @@ public class GameDirector : MonoBehaviour
         {
             _SetSelectedNum(isRight, ReturnRandomNum());
 
+            // UIを更新
+            _UpdateNumImage(isRight);
+
             /* 【No0モード】目標の数字を更新 */
             if (!no0Mode) return;
             _UpdateTargetNum();
@@ -507,6 +514,10 @@ public class GameDirector : MonoBehaviour
             // 加算した数字に更新
             _SetSelectedNum(isEnter2Right, _addedNum);
         }
+
+        // UIを更新
+        _UpdateNumImage(isEnter2Right);
+
         // 確認用の2乗数を更新
         _CheckSqares();
 
@@ -654,6 +665,9 @@ public class GameDirector : MonoBehaviour
             nowNum = num;
         }
 
+        // UIを更新
+        holdNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(holdNum)]);
+        nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
         // SEを再生
         SE.instance.PlayClip(6);
 
