@@ -2211,6 +2211,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9920040}
     m_Modifications:
+    - target: {fileID: 7399124778255970098, guid: f65a74c7ad040d643a78119e3b80c76d,
+        type: 3}
+      propertyPath: backFlameImage
+      value: 
+      objectReference: {fileID: 9920041}
     - target: {fileID: 8394137534569333389, guid: f65a74c7ad040d643a78119e3b80c76d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2677,7 +2682,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1428123337}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -2750,8 +2755,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000799, y: 1.0000799, z: 1.0000799}
   m_Children:
-  - {fileID: 650955656}
   - {fileID: 1390275851}
+  - {fileID: 650955656}
   - {fileID: 455831804}
   m_Father: {fileID: 750454384}
   m_RootOrder: 6
@@ -2886,6 +2891,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1338668125}
     m_Modifications:
+    - target: {fileID: 7399124778255970098, guid: f65a74c7ad040d643a78119e3b80c76d,
+        type: 3}
+      propertyPath: backFlameImage
+      value: 
+      objectReference: {fileID: 1338668126}
     - target: {fileID: 8394137534569333389, guid: f65a74c7ad040d643a78119e3b80c76d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3051,8 +3061,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1681216728}
   - {fileID: 1937084607}
+  - {fileID: 1681216728}
   m_Father: {fileID: 750454384}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3295,6 +3305,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1487977011}
     m_Modifications:
+    - target: {fileID: 7399124778255970098, guid: f65a74c7ad040d643a78119e3b80c76d,
+        type: 3}
+      propertyPath: backFlameImage
+      value: 
+      objectReference: {fileID: 1487977012}
     - target: {fileID: 8394137534569333389, guid: f65a74c7ad040d643a78119e3b80c76d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3759,7 +3774,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000799, y: 1.0000799, z: 1.0000799}
   m_Children: []
   m_Father: {fileID: 1487977011}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -4015,6 +4030,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1532586048}
     m_Modifications:
+    - target: {fileID: 7399124778255970098, guid: f65a74c7ad040d643a78119e3b80c76d,
+        type: 3}
+      propertyPath: backFlameImage
+      value: 
+      objectReference: {fileID: 1532586049}
     - target: {fileID: 8394137534569333389, guid: f65a74c7ad040d643a78119e3b80c76d,
         type: 3}
       propertyPath: m_Pivot.x

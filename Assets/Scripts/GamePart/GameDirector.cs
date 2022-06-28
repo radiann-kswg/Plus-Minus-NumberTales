@@ -396,6 +396,10 @@ public class GameDirector : MonoBehaviour
 
             TargetNum = ReturnRandomTargetNum();
             _SwitchNumSpriteOfTarget();
+
+            // エフェクトを再生
+            StartCoroutine(targetImage_minus.PlayChangeTargetNumEffect());
+            StartCoroutine(targetImage_plus.PlayChangeTargetNumEffect());
         }
     }
 
@@ -445,7 +449,7 @@ public class GameDirector : MonoBehaviour
         int _varChainNum = isRight ? _rightChainNum : _leftChainNum;
         if(_varChainNum + 1 >= _LIMIT_CHAIN_NUM)
         {
-            _ResetChain(isRight, true);
+            _ResetChain(isRight, true, true);
             
             //インクリメントせず関数を離脱
             return;
@@ -472,10 +476,14 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     /// <param name="isRight">右の数字についてか</param>
     /// <param name="isSetNum2Random">数字をランダムに変更するか</param>
-    private void _ResetChain(bool isRight, bool isSetNum2Random)
+    /// <param name="isResetEffect">数字のエフェクトを停止するか</param>
+    private void _ResetChain(bool isRight, bool isSetNum2Random, bool isResetEffect = false)
     {
         if (isRight) _rightChainNum = 0;
         else _leftChainNum = 0;
+
+        if(isResetEffect)
+            (isRight ? rightNumImage : leftNumImage).ResetEffect();
 
         if (isSetNum2Random)
         {
@@ -487,7 +495,7 @@ public class GameDirector : MonoBehaviour
             /* 【No0モード】目標の数字を更新 */
             if (!no0Mode) return;
             _UpdateTargetNum();
-            //_ResetChain(!isRight, false);
+            _ResetChain(!isRight, false);
         }
     }
 
@@ -517,23 +525,28 @@ public class GameDirector : MonoBehaviour
 
         // UIを更新
         _UpdateNumImage(isEnter2Right);
-
+        /*
         // 確認用の2乗数を更新
         _CheckSqares();
-
+        */
         // バーストしたとき
         if (isBurst)
         {
             /* ダメージエフェクト */
             SE.instance.PlayClip(3);
+            StartCoroutine((isEnter2Right ? rightNumImage : leftNumImage).PlayBurstEffect());
 
             BubbleCloning(true, true);
         }
         /* 左右で符号の異なる目標の数字を生成したとき */
         if (IsPlusMinusFive())
         {
-            // SEを再生
+            /* 高得点エフェクト */
             SE.instance.PlayClip(5);
+            StartCoroutine(rightNumImage.PlayFiveEffect());
+            StartCoroutine(leftNumImage.PlayFiveEffect());
+            StartCoroutine(targetImage_minus.PlayFiveEffect());
+            StartCoroutine(targetImage_plus.PlayFiveEffect());
 
             // 全消しを実行
             _FlashAll();
@@ -546,32 +559,41 @@ public class GameDirector : MonoBehaviour
         {
             // SEを再生
             SE.instance.PlayClip(4);
-            
+
             /* 目標の数字が生成されたときの左右ごとの処理 */
-            foreach (bool _isRightBecomeFive in (new bool[] { !isEnter2Right, isEnter2Right }))
+            foreach (bool _isCheckingRight in (new bool[] { !isEnter2Right, isEnter2Right }))
             {
-                if (IsFive(true, _isRightBecomeFive))
+                if (IsFive(true, _isCheckingRight))
                 {
+                    /* 加点エフェクト */
+                        StartCoroutine((_isCheckingRight ? rightNumImage : leftNumImage).PlayFiveEffect());
+                        
+                        // 目標の数字に応じてエフェクトを再生
+                        bool _isPlusFive = _ReturnSelectedNum(_isCheckingRight) > 0;
+                        StartCoroutine((_isPlusFive ? targetImage_plus : targetImage_minus).PlayFiveEffect());
+                        (!_isPlusFive ? targetImage_plus : targetImage_minus).ResetEffect();
                     // かつ加算によって数字が変わった場合は連鎖数をリセット
-                    if (_isRightBecomeFive == isEnter2Right && _prevNum != _addedNum)
-                        _ResetChain(_isRightBecomeFive, false);
+                    if (_isCheckingRight == isEnter2Right && _prevNum != _addedNum)
+                        _ResetChain(_isCheckingRight, false);
 
                     Score += fiveScore;
-                    _FlushNumAndHalfBubble(_isRightBecomeFive);
+                    _FlushNumAndHalfBubble(_isCheckingRight);
 
                 }
                 else
                 {
-                    _ResetChain(_isRightBecomeFive, false);
+                    _ResetChain(_isCheckingRight, false, true);
                 }
             }
         }
         /* 目標の数字が生成されていないときの処理 */
-        else
+        if(!IsFive())
         {
-            // 連鎖数をリセット
-            _ResetChain(true, false);
-            _ResetChain(false, false);
+            // 連鎖数とエフェクトをリセット
+            _ResetChain(true, false, true);
+            _ResetChain(false, false, true);
+            targetImage_plus.ResetEffect();
+            targetImage_minus.ResetEffect();
 
             // 加点もバーストもされない場合の処理
             if (!isBurst)
@@ -612,10 +634,9 @@ public class GameDirector : MonoBehaviour
     /// <returns>目標の数字が生成されたか</returns>
     bool IsFive(bool selection = false, bool isRight = false)
     {
-        /*
         // 確認用2乗数の更新
         _CheckSqares();
-        */
+        
         if (selection) {
             if (!isRight) return _sqareLeft == _sqareTarget;
             else return _sqareRight == _sqareTarget;
@@ -629,10 +650,9 @@ public class GameDirector : MonoBehaviour
     /// <returns>目標の数字が左右異なる符号で生成されたか</returns>
     bool IsPlusMinusFive()
     {
-        /*
         // 確認用2乗数の更新
         _CheckSqares();
-        */
+
         return (leftNum * rightNum == -_sqareTarget) && (_sqareLeft == _sqareRight);
     }
 
