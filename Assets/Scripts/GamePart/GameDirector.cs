@@ -451,6 +451,10 @@ public class GameDirector : MonoBehaviour
             // エフェクトを再生
             StartCoroutine(targetImage_minus.PlayChangeTargetNumEffect());
             StartCoroutine(targetImage_plus.PlayChangeTargetNumEffect());
+
+            // UIを更新
+            holdNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(holdNum)]);
+            nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
         }
     }
 

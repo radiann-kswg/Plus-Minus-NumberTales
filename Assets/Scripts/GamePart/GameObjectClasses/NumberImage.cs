@@ -52,13 +52,13 @@ public class NumberImage : MonoBehaviour
 
     public IEnumerator PlayBurstEffect()
     {
-        if (isAnimating && nowPlaying != "PlayBurstEffect") ResetEffect();
+        ResetEffect();
         isAnimating = true;
         nowPlaying = "PlayBurstEffect";
         animTime = Time.deltaTime;
         while (animTime < ANIMATION_TIMELENGTH)
         {
-            float _gain = 1f - (ANIMATION_TIMELENGTH - animTime) * 0.6f;
+            float _gain = 1f - (ANIMATION_TIMELENGTH - animTime) * 0.8f;
             numImage.color = new Color(defaultNumColor.r, defaultNumColor.g * _gain, defaultNumColor.b * _gain);
             animTime += Time.deltaTime;
             yield return null;
@@ -71,7 +71,7 @@ public class NumberImage : MonoBehaviour
     public IEnumerator PlayFiveEffect()
     {
         if(!backFlameImage) yield break;
-        if (isAnimating && nowPlaying != "PlayFiveEffect") ResetEffect();
+        ResetEffect();
         isAnimating = true;
         nowPlaying = "PlayFiveEffect";
         animTime = Time.deltaTime;
@@ -87,14 +87,15 @@ public class NumberImage : MonoBehaviour
 
     public IEnumerator PlayChangeTargetNumEffect()
     {
-        if (isAnimating && nowPlaying != "PlayChangeTargetNumEffect") ResetEffect();
+        ResetEffect();
         isAnimating = true;
         nowPlaying = "PlayChangeTargetNumEffect";
         animTime = Time.deltaTime;
         while (animTime < ANIMATION_TIMELENGTH)
         {
-            float _gain = 1f - (ANIMATION_TIMELENGTH - animTime) * 0.45f;
-            numImage.color = new Color(defaultNumColor.r * _gain, defaultNumColor.g, defaultNumColor.b);
+            float _gainR = 1f - (ANIMATION_TIMELENGTH - animTime) * 0.7f;
+            float _gainG = 1f - (ANIMATION_TIMELENGTH - animTime) * 0.4f;
+            numImage.color = new Color(defaultNumColor.r * _gainR, defaultNumColor.g * _gainG, defaultNumColor.b);
             animTime += Time.deltaTime;
             yield return null;
         }
