@@ -701,7 +701,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: 0}
+  m_AnchoredPosition: {x: 165, y: 0}
   m_SizeDelta: {x: 320, y: 150}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &396159023
@@ -1842,7 +1842,7 @@ MonoBehaviour:
   vl: {fileID: 1675519447}
   TargetNum: 5
   Score: 0
-  Level: 1
+  maxLevel: 51
   fiveScore: 200
   plusMinusFiveScore: 1000
   levelDist: 2000
@@ -2085,7 +2085,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftSwitch: {fileID: 1831043341}
   rightSwitch: {fileID: 2116305592}
-  IsRight: 0
 --- !u!1 &1096572580
 GameObject:
   m_ObjectHideFlags: 0
