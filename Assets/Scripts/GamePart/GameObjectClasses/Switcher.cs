@@ -7,7 +7,7 @@ public class Switcher : MonoBehaviour
     [SerializeField]
     GameObject leftSwitch, rightSwitch;
 
-    public bool IsRight = false;
+    private bool _isRight = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +18,18 @@ public class Switcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        leftSwitch.SetActive(!IsRight);
-        rightSwitch.SetActive(IsRight);
+
     }
 
     public void Switching(bool isRight_new)
     {
-        IsRight = isRight_new;
+        _isRight = isRight_new;
+        leftSwitch.SetActive(!_isRight);
+        rightSwitch.SetActive(_isRight);
+    }
+
+    public bool IsRight()
+    {
+        return _isRight;
     }
 }

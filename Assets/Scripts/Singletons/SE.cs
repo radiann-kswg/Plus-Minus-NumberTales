@@ -26,9 +26,12 @@ public class SE : MonoBehaviour
 
     public void PlayClip(int clipID)
     {
-        //source.Stop();
-        source.clip = clips[clipID];
-        source.Play();
+        if (!TransitionManager.instance.IsTransitionAnimating())
+        {
+            //source.Stop();
+            source.clip = clips[clipID];
+            source.Play();
+        }
     }
 
     // Start is called before the first frame update

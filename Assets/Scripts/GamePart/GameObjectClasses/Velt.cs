@@ -21,27 +21,31 @@ public class Velt : MonoBehaviour
     void Start()
     {
         slider = this.GetComponent<Slider>();
-        value = ReturnMaxValue();
+        slider.value = value = ReturnMaxValue();
     }
 
     // Update is called once per frame
     void Update()
     {
-        value -= velocity * Time.deltaTime * (1 + (float)(director.Level - 1) * 0.125f);
-        if (value <= 0.0f)
+        if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            if (director.ReturnStockingFlag())
+            // 難易度に応じた速度補正
+            value -= velocity * Time.deltaTime * (1 + (float)(director.ReturnDifficulty() - 1) * 0.125f);
+            if (value <= 0.0f)
             {
-                director.EnterNum2Stock(sw.IsRight);
-                director.TurnOffHoldFlag();
-                director.SwitchNextNum();
-                value = ReturnMaxValue();
+                if (director.ReturnStockingFlag())
+                {
+                    director.EnterNum2Stock(sw.IsRight());
+                    director.TurnOffHoldFlag();
+                    director.SwitchNextNum();
+                    value = ReturnMaxValue();
+                }
             }
-        }
-        else
-        {
-            director.TurnOnBubblingFlag();
-            slider.value = Mathf.Floor(value * (float)steps) / (float)steps;
+            else
+            {
+                director.TurnOnBubblingFlag();
+                slider.value = Mathf.Floor(value * (float)steps) / (float)steps;
+            }
         }
     }
 
