@@ -25,29 +25,32 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (bool isPositive in new bool[] { false, true })
+        if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            if (Input.GetButtonDown("Horizontal") || GetAxisDown("Horizontal", isPositive))
+            foreach (bool isPositive in new bool[] { false, true })
             {
-                sw.Switching(isPositive);
+                if (Input.GetButtonDown("Horizontal") || GetAxisDown("Horizontal", isPositive))
+                {
+                    sw.Switching(isPositive);
 
-                SE.instance.PlayClip(1);
+                    SE.instance.PlayClip(1);
+                }
             }
-        }
 
-        if (Input.GetButtonDown("Fire3"))
-        {
-            director.HoldNum();
-        }
+            if (Input.GetButtonDown("Fire3"))
+            {
+                director.HoldNum();
+            }
 
-        if (Input.GetButtonDown("Fire1"))
-        {
-            vl.HardDrop();
-        }
+            if (Input.GetButtonDown("Fire1"))
+            {
+                vl.HardDrop();
+            }
 
-        if(isPressed && !GetAxisHold("Horizontal"))
-        {
-            isPressed = false;
+            if (isPressed && !GetAxisHold("Horizontal"))
+            {
+                isPressed = false;
+            }
         }
     }
 
