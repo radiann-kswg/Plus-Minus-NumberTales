@@ -29,7 +29,8 @@ public class Velt : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            value -= velocity * Time.deltaTime * (1 + (float)(director.Level - 1) * 0.125f);
+            // 難易度に応じた速度補正
+            value -= velocity * Time.deltaTime * (1 + (float)(director.ReturnDifficulty() - 1) * 0.125f);
             if (value <= 0.0f)
             {
                 if (director.ReturnStockingFlag())

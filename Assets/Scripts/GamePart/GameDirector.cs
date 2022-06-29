@@ -58,9 +58,20 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     public int Score = 0;
     /// <summary>
-    /// レベル
+    /// 難易度
     /// </summary>
-    public int Level = 1;
+    int difficulty = 1;
+
+    /// <summary>
+    /// 難易度にかかわるレベルの最大値
+    /// </summary>
+    [SerializeField]
+    int maxLevel = 51;
+
+    /// <summary>
+    /// 最大難易度に到達したか
+    /// </summary>
+    bool isMaxDifficulty = false;
 
     /// <summary>
     /// 目標の数字が1つできた時の得点
@@ -208,7 +219,7 @@ public class GameDirector : MonoBehaviour
                 /* ゲームオーバー(リザルト画面へ) */
                 SE.instance.PlayClip(3);
                 Messerger.instance.ScoreMessage = Score;
-                Messerger.instance.LevelMessage = Level;
+                Messerger.instance.LevelMessage = ReturnLevel();
                 TransitionManager.instance.FadeOut();
             }
         }
@@ -281,9 +292,49 @@ public class GameDirector : MonoBehaviour
     {
         nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
         nextNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nextNum)]);
+        _UpdateScores();
+    }
+
+    /// <summary>
+    /// スコア表示を更新します
+    /// </summary>
+    private void _UpdateScores()
+    {
         scoreText.text = Score.ToString();
-        Level = Score / levelDist + 1;
-        levelText.text = Level.ToString();
+        
+        // 最大難易度に到達しているときはレベルの更新をしない
+        if (isMaxDifficulty) return;
+
+        int _level = ReturnLevel();
+        // 最大難易度に到達したときはフラグを立てて専用の表示をする
+        if(_level >= maxLevel)
+        {
+            difficulty = maxLevel;
+            levelText.text = "MAX";
+            isMaxDifficulty = true;
+            return;
+        }
+        difficulty = _level;
+        levelText.text = difficulty.ToString();
+
+    }
+
+    /// <summary>
+    /// 到達したレベルを返します
+    /// </summary>
+    /// <returns>到達したレベル（難易度上限とは関係なくスコアと線形関係）</returns>
+    public int ReturnLevel()
+    {
+        return Score / levelDist + 1;
+    }
+
+    /// <summary>
+    /// 現在の難易度を返します
+    /// </summary>
+    /// <returns>現在の難易度</returns>
+    public int ReturnDifficulty()
+    {
+        return difficulty;
     }
 
     /// <summary>
@@ -318,17 +369,17 @@ public class GameDirector : MonoBehaviour
         while (_CheckNumberIsNotZeroOrTarget(num))
         {
             /* レベルデザインに基づく乱数生成 */
-            if (Level <= 3)
+            if (difficulty <= 3)
             {
                 num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 3.5f) * 4.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
                 continue;
             }
-            if (Level <= 7)
+            if (difficulty <= 7)
             {
                 num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.5f) * 7.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
                 continue;
             }
-            num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(12 + Level) / (float)Level) * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
+            num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(12 + difficulty) / (float)difficulty) * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
         }
         return num;
     }
@@ -343,14 +394,14 @@ public class GameDirector : MonoBehaviour
         while (_CheckTargetNumber(num))
         {
             /* レベルデザインに基づく乱数生成 */
-            if (Level < 8)
+            if (difficulty < 8)
             {
                 num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.25f) * 7.0f) + 1);
                 continue;
             }
-            if (Level < 20)
+            if (difficulty < 20)
             {
-                num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(8 + Level) / (float)Level) * 8.0f) + 1);
+                num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(8 + difficulty) / (float)difficulty) * 8.0f) + 1);
                 continue;
             }
             num = (Mathf.FloorToInt(Random.value * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
