@@ -27,30 +27,39 @@ public class GameController : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            foreach (bool isPositive in new bool[] { false, true })
-            {
-                if (Input.GetButtonDown("Horizontal") || GetAxisDown("Horizontal", isPositive))
-                {
-                    sw.Switching(isPositive);
+            GetGameControl();
+        }
+    }
 
-                    SE.instance.PlayClip(1);
-                }
-            }
-
-            if (Input.GetButtonDown("Fire3"))
+    void GetGameControl()
+    {
+        foreach (bool isPositive in new bool[] { false, true })
+        {
+            if (Input.GetButtonDown("Horizontal") || GetAxisDown("Horizontal", isPositive))
             {
-                director.HoldNum();
-            }
+                sw.Switching(isPositive);
 
-            if (Input.GetButtonDown("Fire1"))
-            {
-                vl.HardDrop();
+                SE.instance.PlayClip(1);
+                return;
             }
+        }
 
-            if (isPressed && !GetAxisHold("Horizontal"))
-            {
-                isPressed = false;
-            }
+        if (Input.GetButtonDown("Fire3"))
+        {
+            director.HoldNum();
+            return;
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            vl.HardDrop();
+            return;
+        }
+
+        if (isPressed && !GetAxisHold("Horizontal"))
+        {
+            isPressed = false;
+            return;
         }
     }
 

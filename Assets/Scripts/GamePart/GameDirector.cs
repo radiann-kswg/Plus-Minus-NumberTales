@@ -453,7 +453,8 @@ public class GameDirector : MonoBehaviour
             StartCoroutine(targetImage_plus.PlayChangeTargetNumEffect());
 
             // UIを更新
-            holdNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(holdNum)]);
+            if(isFirstHolded)
+                holdNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(holdNum)]);
             nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
         }
     }
@@ -551,6 +552,7 @@ public class GameDirector : MonoBehaviour
             if (!no0Mode) return;
             _UpdateTargetNum();
             _ResetChain(!isRight, false);
+            _UpdateNumImage(!isRight);
         }
     }
 
@@ -609,49 +611,48 @@ public class GameDirector : MonoBehaviour
             // 連鎖数やその他の得点,エフェクト処理は不要なので関数を離脱
             return;
         }
-        /* 目標の数字が生成されたときの処理(左右共通) */
-        if (IsFive())
+
+        bool _wasFive = false;
+
+        /* 目標の数字が生成されたときの左右ごとの処理 */
+        foreach (bool _isCheckingRight in (new bool[] { !isEnter2Right, isEnter2Right }))
         {
-            // SEを再生
-            SE.instance.PlayClip(4);
-
-            /* 目標の数字が生成されたときの左右ごとの処理 */
-            foreach (bool _isCheckingRight in (new bool[] { !isEnter2Right, isEnter2Right }))
+            if (IsFive(true, _isCheckingRight))
             {
-                if (IsFive(true, _isCheckingRight))
-                {
-                    /* 加点エフェクト */
-                        StartCoroutine((_isCheckingRight ? rightNumImage : leftNumImage).PlayFiveEffect());
-                        
-                        // 目標の数字に応じてエフェクトを再生
-                        bool _isPlusFive = _ReturnSelectedNum(_isCheckingRight) > 0;
-                        StartCoroutine((_isPlusFive ? targetImage_plus : targetImage_minus).PlayFiveEffect());
-                        (!_isPlusFive ? targetImage_plus : targetImage_minus).ResetEffect();
-                    // かつ加算によって数字が変わった場合は連鎖数をリセット
-                    if (_isCheckingRight == isEnter2Right && _prevNum != _addedNum)
-                        _ResetChain(_isCheckingRight, false);
+                // SEを再生
+                SE.instance.PlayClip(4);
 
-                    Score += fiveScore;
-                    _FlushNumAndHalfBubble(_isCheckingRight);
+                /* 加点エフェクト */
+                StartCoroutine((_isCheckingRight ? rightNumImage : leftNumImage).PlayFiveEffect());
 
-                }
-                else
-                {
-                    _ResetChain(_isCheckingRight, false, true);
-                }
+                // 目標の数字に応じてエフェクトを再生
+                bool _isPlusFive = _ReturnSelectedNum(_isCheckingRight) > 0;
+                StartCoroutine((_isPlusFive ? targetImage_plus : targetImage_minus).PlayFiveEffect());
+                (!_isPlusFive ? targetImage_plus : targetImage_minus).ResetEffect();
+
+                // かつ加算によって数字が変わった場合は連鎖数をリセット
+                if (_isCheckingRight == isEnter2Right && _prevNum != _addedNum)
+                    _ResetChain(_isCheckingRight, false);
+
+                Score += fiveScore;
+                _FlushNumAndHalfBubble(_isCheckingRight);
+
+                _wasFive = true;
+
+            }
+            else
+            {
+                _ResetChain(_isCheckingRight, false, true);
             }
         }
         /* 目標の数字が生成されていないときの処理 */
         if(!IsFive())
         {
-            // 連鎖数とエフェクトをリセット
-            _ResetChain(true, false, true);
-            _ResetChain(false, false, true);
+            // エフェクトをリセット
             targetImage_plus.ResetEffect();
             targetImage_minus.ResetEffect();
-
             // 加点もバーストもされない場合の処理
-            if (!isBurst)
+            if (!isBurst && !_wasFive)
             {
                 // SEを再生
                 SE.instance.PlayClip(2);
