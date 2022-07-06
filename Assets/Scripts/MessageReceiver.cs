@@ -11,7 +11,8 @@ public class MessageReceiver : MonoBehaviour
     [SerializeField]
     Image characterImage;
 
-    bool isOpenedTweetUrl = false;
+    [SerializeField]
+    TweetSystem tweet;
 
     // Start is called before the first frame update
     void Start()
@@ -23,21 +24,18 @@ public class MessageReceiver : MonoBehaviour
         scoreText.text = score.ToString();
         levelText.text = level.ToString();
         characterImage.sprite = Messerger.instance.charactersImage[target];
+
+        _TweetResult();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!TransitionManager.instance.IsTransitionAnimating() && !isOpenedTweetUrl)
-        {
-            _TweetResult();
-        }
     }
 
     void _TweetResult()
     {
-        TweetSystem tweet = new TweetSystem();
-        tweet.TweetResult(target, score, level);
-        isOpenedTweetUrl = true;
+        if (tweet)
+            tweet.TweetResult(target, score, level);
     }
 }
