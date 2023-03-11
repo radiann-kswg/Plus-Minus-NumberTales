@@ -150,6 +150,16 @@ public class GameDirector : MonoBehaviour
     bool isHolded = false;
 
     /// <summary>
+    /// 表示される数字の最大絶対値
+    /// </summary>
+    const int ABS_OF_MAX_NUMBER = 9;
+
+    /// <summary>
+    /// 目標として取りうる数字の最小絶対値
+    /// </summary>
+    const int ABS_OF_MIN_TARGET_NUMBER = 1;
+
+    /// <summary>
     /// それぞれの数字を表示するNumberImageコンポーネント
     /// </summary>
     [SerializeField]
@@ -191,7 +201,7 @@ public class GameDirector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _InitTargetName();
+        _InitTargetNum();
 
         _SwitchNumSpriteOfTarget();
 
@@ -214,14 +224,12 @@ public class GameDirector : MonoBehaviour
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
 
-            if (isGameOver)
-            {
-                /* ゲームオーバー(リザルト画面へ) */
-                SE.instance.PlayClip(3);
-                Messerger.instance.ScoreMessage = Score;
-                Messerger.instance.LevelMessage = ReturnLevel();
-                TransitionManager.instance.FadeOut();
-            }
+            if (!isGameOver) return;
+            /* ゲームオーバー(リザルト画面へ) */
+            SE.instance.PlayClip(3);
+            Messerger.instance.ScoreMessage = Score;
+            Messerger.instance.LevelMessage = ReturnLevel();
+            TransitionManager.instance.FadeOut();
         }
 
         if (TransitionManager.instance.IsReadyToNextSceneNow())
@@ -243,24 +251,50 @@ public class GameDirector : MonoBehaviour
     /// <summary>
     /// 目標の数字を初期設定します
     /// </summary>
-    private void _InitTargetName()
+    private void _InitTargetNum()
     {
         // シングルトンから目標の数字を受信
         TargetNum = Messerger.instance.TargetNumMessage;
 
         /* 目標の数字の例外処理 */
         // 負の値を正に(絶対値化)
-        TargetNum *= TargetNum < 0 ? -1 : 1;
-        // 0だった時の処理（0番(シークレット)のキャラを解禁しないのであれば最小値:1に）
-        TargetNum = TargetNum == 0 && !Messerger.instance.IsUnlockedNo0 ? 1 : TargetNum;
-        // 【No0モード】（0番(シークレット)のキャラを解禁するのであればNo0モードを解禁してランダムな数字に）
-        if(TargetNum == 0 && Messerger.instance.IsUnlockedNo0)
+        if (TargetNum < 0) TargetNum *= -1;
+        // 2桁以上の値を最大値:9に
+        TargetNum = TargetNum > ABS_OF_MAX_NUMBER ? ABS_OF_MAX_NUMBER : TargetNum;
+
+        // 目標の数字が0だった時の処理
+        if (TargetNum != 0) return;
+        
+        // 【No0モード】：0番(シークレット)のキャラを解禁するのであればNo0モードを解禁してランダムな数字に
+        if(_ReturnNo0ModeFlag())
         {
             no0Mode = true;
             TargetNum = ReturnRandomTargetNum();
         }
-        // 2桁以上の値を最大値:9に
-        TargetNum = TargetNum >= 10 ? 9 : TargetNum;
+        // 0番(シークレット)のキャラを解禁しないのであれば最小値に
+        else
+        {
+            TargetNum = ABS_OF_MIN_TARGET_NUMBER;
+        }
+    }
+
+    /// <summary>
+    /// 0番(シークレット)のキャラの解禁フラグを返します
+    /// </summary>
+    /// <returns></returns>
+    private bool _ReturnNo0ModeFlag()
+    {
+        return TargetNum == 0 && Messerger.instance.IsUnlockedNo0;
+    }
+
+
+    /// <summary>
+    /// 目標の数字が0であるかどうかの確認を行います（通常モード時の例外処理用）
+    /// </summary>
+    /// <returns></returns>
+    private bool _IsTargetNum0_OnNonNo0ModeFlag()
+    {
+        return !Messerger.instance.IsUnlockedNo0;
     }
 
     /// <summary>
@@ -270,7 +304,18 @@ public class GameDirector : MonoBehaviour
     /// <returns></returns>
     private int _ReturnNumImageIndex(int num)
     {
-        return num + 9;
+        return num + ABS_OF_MAX_NUMBER;
+    }
+
+
+    /// <summary>
+    /// 指定した数字の画像を返します
+    /// </summary>
+    /// <param name="targetNum">返す数字</param>
+    /// <returns></returns>
+    private Sprite _ReturnNormalNumImage(int num)
+    {
+        return normalNumImage[_ReturnNumImageIndex(num)];
     }
 
     /// <summary>
@@ -282,7 +327,7 @@ public class GameDirector : MonoBehaviour
     {
         int _num = isRight ? rightNum : leftNum;
         if (_ReturnNumImageIndex(_num) >= 0 && _ReturnNumImageIndex(_num) < normalNumImage.Count)
-            (isRight ? rightNumImage : leftNumImage).SetNumImage(normalNumImage[_ReturnNumImageIndex(_num)]);
+            (isRight ? rightNumImage : leftNumImage).SetNumImage(_ReturnNormalNumImage(_num));
     }
 
     /// <summary>
@@ -290,8 +335,8 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     private void _UpdateUIs()
     {
-        nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
-        nextNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nextNum)]);
+        nowNumImage.SetNumImage(_ReturnNormalNumImage(nowNum));
+        nextNumImage.SetNumImage(_ReturnNormalNumImage(nextNum));
         _UpdateScores();
     }
 
@@ -360,6 +405,19 @@ public class GameDirector : MonoBehaviour
     }
 
     /// <summary>
+    /// レベルデザイン用変数：VERYEASY
+    /// </summary>
+    const int MAX_DIFFICULTY_OF_VERYEASY = 3;
+    /// <summary>
+    /// レベルデザイン用変数：EASY
+    /// </summary>
+    const int MAX_DIFFICULTY_OF_EASY= 7;
+    /// <summary>
+    /// レベルデザイン用変数：BIGINING
+    /// </summary>
+    const int MAX_DIFFICULTY_OF_BIGINING = 19;
+
+    /// <summary>
     /// レベルデザインに応じたランダムな数字を返します
     /// </summary>
     /// <returns>抽選結果</returns>
@@ -369,12 +427,12 @@ public class GameDirector : MonoBehaviour
         while (_CheckNumberIsNotZeroOrTarget(num))
         {
             /* レベルデザインに基づく乱数生成 */
-            if (difficulty <= 3)
+            if (difficulty <= MAX_DIFFICULTY_OF_VERYEASY)
             {
                 num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 3.5f) * 4.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
                 continue;
             }
-            if (difficulty <= 7)
+            if (difficulty <= MAX_DIFFICULTY_OF_EASY)
             {
                 num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.5f) * 7.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
                 continue;
@@ -394,12 +452,12 @@ public class GameDirector : MonoBehaviour
         while (_CheckTargetNumber(num))
         {
             /* レベルデザインに基づく乱数生成 */
-            if (difficulty < 8)
+            if (difficulty <= MAX_DIFFICULTY_OF_EASY)
             {
                 num = (Mathf.FloorToInt(Mathf.Pow(Random.value, 2.25f) * 7.0f) + 1);
                 continue;
             }
-            if (difficulty < 20)
+            if (difficulty <= MAX_DIFFICULTY_OF_BIGINING)
             {
                 num = (Mathf.FloorToInt(Mathf.Pow(Random.value, (float)(8 + difficulty) / (float)difficulty) * 8.0f) + 1);
                 continue;
@@ -407,11 +465,6 @@ public class GameDirector : MonoBehaviour
             num = (Mathf.FloorToInt(Random.value * 9.0f) + 1) * Mathf.CeilToInt(Mathf.Sign(Random.value - 0.5f));
         }
         return num;
-    }
-
-    private Sprite _ReturnNumImage(List<Sprite> numImages, int targetNum)
-    {
-        return numImages[_ReturnNumImageIndex(targetNum)];
     }
 
     private Sprite _SwitchNumSprite2Sprite(List<Sprite> fromImages, List<Sprite> toImages, int targetNum)
@@ -426,8 +479,8 @@ public class GameDirector : MonoBehaviour
     /// </summary>
     private void _SwitchNumSpriteOfTarget()
     {
-        Sprite preSprite_minus = _ReturnNumImage(normalNumImage, -TargetNum);
-        Sprite preSprite_plus = _ReturnNumImage(normalNumImage, TargetNum);
+        Sprite preSprite_minus = _ReturnNormalNumImage(-TargetNum);
+        Sprite preSprite_plus = _ReturnNormalNumImage(TargetNum);
         targetImage_minus.SetNumImage(_SwitchNumSprite2Sprite(targetNumImage, normalNumImage, -TargetNum));
         targetImage_plus.SetNumImage(_SwitchNumSprite2Sprite(targetNumImage, normalNumImage, TargetNum));
         targetNumImage[_ReturnNumImageIndex(-TargetNum)] = preSprite_minus;
@@ -441,8 +494,7 @@ public class GameDirector : MonoBehaviour
     private void _UpdateTargetNum(bool isInit = false)
     {
         _SwitchNumSpriteOfTarget();
-        if (!isInit)
-        {
+        if (!isInit) {
             if (!no0Mode) return;
 
             TargetNum = ReturnRandomTargetNum();
@@ -453,10 +505,10 @@ public class GameDirector : MonoBehaviour
             StartCoroutine(targetImage_plus.PlayChangeTargetNumEffect());
 
             // UIを更新
-            if(isFirstHolded)
-                holdNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(holdNum)]);
-            nowNumImage.SetNumImage(normalNumImage[_ReturnNumImageIndex(nowNum)]);
+            if (isFirstHolded)
+                holdNumImage.SetNumImage(_ReturnNormalNumImage(holdNum));
         }
+        nowNumImage.SetNumImage(_ReturnNormalNumImage(nowNum));
     }
 
     /// <summary>
@@ -538,24 +590,21 @@ public class GameDirector : MonoBehaviour
         if (isRight) _rightChainNum = 0;
         else _leftChainNum = 0;
 
-        if(isResetEffect)
+        if (isResetEffect)
             (isRight ? rightNumImage : leftNumImage).ResetEffect();
 
-        if (isSetNum2Random)
-        {
-            _SetSelectedNum(isRight, ReturnRandomNum());
+        if (!isSetNum2Random) return;
+        _SetSelectedNum(isRight, ReturnRandomNum());
 
-            // UIを更新
-            _UpdateNumImage(isRight);
+        // UIを更新
+        _UpdateNumImage(isRight);
 
-            /* 【No0モード】目標の数字を更新 */
-            if (!no0Mode) return;
-            _UpdateTargetNum();
-            _ResetChain(!isRight, false);
-            _UpdateNumImage(!isRight);
-        }
+        /* 【No0モード】目標の数字を更新 */
+        if (!no0Mode) return;
+        _UpdateTargetNum();
+        _ResetChain(!isRight, false);
+        _UpdateNumImage(!isRight);
     }
-
     /// <summary>
     /// 数字を加算し、得点処理をします
     /// </summary>
@@ -646,23 +695,17 @@ public class GameDirector : MonoBehaviour
             }
         }
         /* 目標の数字が生成されていないときの処理 */
-        if(!IsFive())
-        {
-            // エフェクトをリセット
-            targetImage_plus.ResetEffect();
-            targetImage_minus.ResetEffect();
-            // 加点もバーストもされない場合の処理
-            if (!isBurst && !_wasFive)
-            {
-                // SEを再生
-                SE.instance.PlayClip(2);
-                // バブルを発生
-                if (nowNum != 0)
-                {
-                    BubbleCloning(nowNum > 0);
-                }
-            }
-        }
+        if (IsFive()) return;
+        // エフェクトをリセット
+        targetImage_plus.ResetEffect();
+        targetImage_minus.ResetEffect();
+
+        // 加点もバーストもされない場合の処理
+        if (isBurst || _wasFive) return;
+        // SEを再生
+        SE.instance.PlayClip(2);
+        // バブルを発生
+        if (nowNum != 0) BubbleCloning(nowNum > 0);
     }
 
     /// <summary>
