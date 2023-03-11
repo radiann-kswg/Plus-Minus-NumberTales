@@ -26,9 +26,7 @@ public class GameController : MonoBehaviour
     void Update()
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
-        {
             GetGameControl();
-        }
     }
 
     void GetGameControl()

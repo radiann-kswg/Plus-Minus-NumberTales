@@ -57,13 +57,11 @@ public class TransitionManager : MonoBehaviour
 
     public void Reset()
     {
-        if (isReadyToNextScene)
-        {
-            isReadyToNextScene = false;
-            switchFlag();
-        }
-    }
+        if (!isReadyToNextScene) return;
 
+        isReadyToNextScene = false;
+        switchFlag();
+    }
     public bool IsTransitionAnimating()
     {
         return isFadingIn || isFadingOut;
@@ -83,32 +81,31 @@ public class TransitionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isReadyToNextScene)
-        {
-            if (isFadingIn)
-            {
-                alpha -= Time.deltaTime;
-                if (alpha > 0.0f) setBlackImageAlpha();
-                else
-                {
-                    alpha = 0.0f;
-                    setBlackImageAlpha();
-                    canvas.SetActive(false);
-                    isFadingIn = false;
-                }
-            }
-            if (isFadingOut)
-            {
-                canvas.SetActive(true);
+        if (isReadyToNextScene) return;
 
-                alpha += Time.deltaTime;
-                if (alpha < 1.0f) setBlackImageAlpha();
-                else
-                {
-                    alpha = 1.0f;
-                    setBlackImageAlpha();
-                    isReadyToNextScene = true;
-                }
+        if (isFadingIn)
+        {
+            alpha -= Time.deltaTime;
+            if (alpha > 0.0f) setBlackImageAlpha();
+            else
+            {
+                alpha = 0.0f;
+                setBlackImageAlpha();
+                canvas.SetActive(false);
+                isFadingIn = false;
+            }
+        }
+        if (isFadingOut)
+        {
+            canvas.SetActive(true);
+
+            alpha += Time.deltaTime;
+            if (alpha < 1.0f) setBlackImageAlpha();
+            else
+            {
+                alpha = 1.0f;
+                setBlackImageAlpha();
+                isReadyToNextScene = true;
             }
         }
     }
