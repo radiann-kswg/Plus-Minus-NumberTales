@@ -279,8 +279,8 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Horizontal
-    descriptiveName: 
-    descriptiveNegativeName: 
+    descriptiveName: Right
+    descriptiveNegativeName: Left
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -295,8 +295,8 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Vertical
-    descriptiveName: 
-    descriptiveNegativeName: 
+    descriptiveName: Up
+    descriptiveNegativeName: Down
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
