@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class SceneSwitcher : MonoBehaviour
 {
@@ -12,8 +13,17 @@ public class SceneSwitcher : MonoBehaviour
     HyakkaCommandTrigger hyakkaC;
 
     [SerializeField]
-    string switchButtonName = "Submit";
+    private InputAction _actionSubmit;
 
+    private void OnEnable()
+    {
+        _actionSubmit?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _actionSubmit?.Disable();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +35,7 @@ public class SceneSwitcher : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            if (Input.GetButtonDown(switchButtonName))
+            if (_isSubmitted())
             {
                 if (!hyakkaC)
                 {
@@ -41,9 +51,15 @@ public class SceneSwitcher : MonoBehaviour
             }
         }
 
-        if(TransitionManager.instance.IsReadyToNextSceneNow())
+        if (TransitionManager.instance.IsReadyToNextSceneNow())
         {
             SceneManager.LoadScene(nextSceneName);
         }
+    }
+
+    private bool _isSubmitted()
+    {
+        float _thres = 0.1f;
+        return _actionSubmit.ReadValue<float>() > 1f - _thres;
     }
 }

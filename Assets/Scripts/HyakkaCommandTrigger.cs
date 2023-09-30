@@ -1,14 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HyakkaCommandTrigger : MonoBehaviour
 {
+    [SerializeField]
+    private InputAction _action;
+
     //[SerializeField]
-    List<string> hyakkaCommandButtonName = new List<string> { "Right", "Down", "Left", "Right", "Up", "Left", "Down", "Down", "Up", "Up", "Right", "Left" };
+    List<Vector2> hyakkaCommandButtonName = new List<Vector2> { Vector2.right, Vector2.down, Vector2.left, Vector2.right, Vector2.up, Vector2.left, Vector2.down, Vector2.down, Vector2.up, Vector2.up, Vector2.right, Vector2.left };
     
     private int _hyakkaCommandProgress = 0;
     private bool _isSuccessInputHyakkaCommand = false;
+
+    private void OnEnable()
+    {
+        _action.performed += OnPerformedCommand;
+
+        _action?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _action.performed -= OnPerformedCommand;
+
+        _action?.Disable();
+    }
+
+
+    private void OnPerformedCommand(InputAction.CallbackContext context)
+    {
+        if (TransitionManager.instance.IsTransitionAnimating())
+            return;
+
+
+        if (!_isSuccessInputHyakkaCommand && _hyakkaCommandProgress < hyakkaCommandButtonName.Count)
+        {
+            if (_GudgeHyakkaCommand(_hyakkaCommandProgress))
+            {
+                _hyakkaCommandProgress++;
+                if (hyakkaCommandButtonName.Count <= _hyakkaCommandProgress) _isSuccessInputHyakkaCommand = true;
+            }
+            else
+            {
+                _ResetHyakkaCommandProgress();
+            }
+            return;
+        }
+
+    }
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -19,31 +62,20 @@ public class HyakkaCommandTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown)
-        {
-            if (!_isSuccessInputHyakkaCommand && _hyakkaCommandProgress < hyakkaCommandButtonName.Count)
-            {
-                if (Input.GetButtonDown(hyakkaCommandButtonName[_hyakkaCommandProgress]))
-                {
-                    _hyakkaCommandProgress++;
-                    if (hyakkaCommandButtonName.Count <= _hyakkaCommandProgress) _isSuccessInputHyakkaCommand = true;
-                }
-                else
-                {
-                    _ResetHyakkaCommandProgress();
-                }
-            }
-            else if (_isSuccessInputHyakkaCommand && !Input.GetButtonDown("Submit"))
-            {
-                _ResetHyakkaCommandProgress();
-            }
-        }
+
     }
+
+    private bool _GudgeHyakkaCommand(int index)
+    {
+        float _thres = 0.1f;
+        return Vector2.Distance(_action.ReadValue<Vector2>(), hyakkaCommandButtonName[index]) < _thres;
+    }
+
 
     private void _ResetHyakkaCommandProgress()
     {
         _isSuccessInputHyakkaCommand = false;
-        _hyakkaCommandProgress = Input.GetButtonDown(hyakkaCommandButtonName[0]) ? 1 : 0;
+        _hyakkaCommandProgress = _GudgeHyakkaCommand(0) ? 1 : 0;
     }
 
     public bool IsSuccessInput()

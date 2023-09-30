@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 154832690}
   - component: {fileID: 154832689}
-  - component: {fileID: 154832688}
+  - component: {fileID: 154832691}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -141,26 +141,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &154832688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154832687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &154832689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +171,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &154832691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154832687}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1 &207956441
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +710,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSceneName: CharacterSelectScene
   hyakkaC: {fileID: 1310626112}
-  switchButtonName: Submit
+  _actionSubmit:
+    m_Name: Action Submit
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: dcb7f8a8-0a55-460d-b6f2-92c35ffe63bd
+    m_Processors: 
+    m_Interactions: Press
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: b9996251-1a72-4246-953c-76600d77febb
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: f8c8b698-da52-45ee-9e79-a48473d9177a
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: bddd6dba-81b4-4846-8715-e749a996ea04
+      m_Path: <Keyboard>/numpadEnter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    m_Flags: 0
 --- !u!4 &1310626111
 Transform:
   m_ObjectHideFlags: 0
@@ -717,6 +770,168 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9971f70b14b7fcd4f9213893161f4f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _action:
+    m_Name: Action
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: 713cda17-64a8-438f-99c4-5493cc1d4fc3
+    m_Processors: 
+    m_Interactions: Press
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 0bdda191-98fa-4a29-b1a3-acbed01ab623
+      m_Path: 2DVector
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: up
+      m_Id: e97f1423-862b-476c-b270-fa0fcdf9b8ef
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 4e83ad00-9b4d-4f0f-a950-2970fe347c73
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: left
+      m_Id: fa9785ce-6ded-4765-bbc2-18a0d7c653d9
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 29082e96-86dd-4006-a139-881fb8e1ecf5
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 2D Vector
+      m_Id: 83c7ab03-b8c2-4ead-aa8f-1768df2e8261
+      m_Path: 2DVector
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 6fdeba13-7798-4968-851a-f903af5a6dec
+      m_Path: <Keyboard>/numpad8
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 96ba1c74-89cd-4e10-9ce0-43b2acbb1778
+      m_Path: <Keyboard>/numpad5
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 1ac83faa-243e-4dc0-8b90-9bebd572cec5
+      m_Path: <Keyboard>/numpad4
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 291e7def-3f55-48d5-a43b-63abc659be7d
+      m_Path: <Keyboard>/numpad6
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 2D Vector
+      m_Id: a525ff75-f0bc-4567-8751-44bf73823010
+      m_Path: 2DVector
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 8d89ed81-3e7f-4d65-8b48-6a020a071ad5
+      m_Path: <Keyboard>/upArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 7a97f14a-9f68-46a2-a6c3-dddf16a2bc83
+      m_Path: <Keyboard>/downArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 4b542a78-94c4-497c-89e2-cfb02473b281
+      m_Path: <Keyboard>/leftArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: right
+      m_Id: b53c11d0-474a-4aae-860c-b05634d1e6e4
+      m_Path: <Keyboard>/rightArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    m_Flags: 0
+  _actionSubmit:
+    m_Name: Action Submit
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 15aae59a-99d5-4496-9107-b343e3e84a4f
+    m_Processors: 
+    m_Interactions: Press
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 5d73f597-c8cd-4086-ba75-148a28168da0
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: f5213386-1a55-4ef7-bd51-9d8062ee26c6
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 22995bd4-6b97-4e84-ac37-7ade0742042b
+      m_Path: <Keyboard>/numpadEnter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    m_Flags: 0
 --- !u!850595691 &1426291636
 LightingSettings:
   m_ObjectHideFlags: 0

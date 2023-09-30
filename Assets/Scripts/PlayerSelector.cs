@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class PlayerSelector : MonoBehaviour
 {
@@ -19,10 +20,6 @@ public class PlayerSelector : MonoBehaviour
 
     [SerializeField]
     string mainSceneName;
-
-    [SerializeField]
-    const float AXIS_THRESHOLD = 0.7f;
-    bool isPressed = false;
     
     [SerializeField]
     Color nonSelectionColor = new Color(255f, 255f, 255f);
@@ -31,6 +28,58 @@ public class PlayerSelector : MonoBehaviour
 
     bool isStartingGame = false;
 
+    [SerializeField]
+    private InputAction _actionSwitchLeft, _actionSwitchRight, _actionSubmit;
+
+    private void OnEnable()
+    {
+        _actionSwitchLeft.performed += OnPerformedLeft;
+        _actionSwitchRight.performed += OnPerformedRight;
+
+        _actionSwitchLeft?.Enable();
+        _actionSwitchRight?.Enable();
+        _actionSubmit?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _actionSwitchLeft.performed -= OnPerformedLeft;
+        _actionSwitchRight.performed -= OnPerformedRight;
+
+        _actionSwitchLeft?.Disable();
+        _actionSwitchRight?.Disable();
+        _actionSubmit?.Disable();
+    }
+
+    private float _thres = 0.7f;
+
+    private void OnPerformedLeft(InputAction.CallbackContext context)
+    {
+        if (TransitionManager.instance.IsTransitionAnimating())
+            return;
+
+        if (context.ReadValue<float>() > _thres)
+        {
+            changeCharacter(false);
+
+            SE.instance.PlayClip(1);
+        }
+    }
+
+
+    private void OnPerformedRight(InputAction.CallbackContext context)
+    {
+        if (TransitionManager.instance.IsTransitionAnimating())
+            return;
+
+        if (context.ReadValue<float>() > _thres)
+        {
+            changeCharacter(true);
+
+            SE.instance.PlayClip(1);
+        }
+
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -45,17 +94,8 @@ public class PlayerSelector : MonoBehaviour
     {
         if (!TransitionManager.instance.IsTransitionAnimating())
         {
-            foreach (bool isPositive in new bool[] { false, true })
-            {
-                if (Input.GetButtonDown("Horizontal") || GetAxisDown("Horizontal", isPositive))
-                {
-                    changeCharacter(isPositive);
 
-                    SE.instance.PlayClip(1);
-                }
-            }
-
-            if (Input.GetButtonDown("Submit"))
+            if (_isSubmitted())
             {
                 isStartingGame = true;
                 SE.instance.PlayClip(0);
@@ -65,33 +105,18 @@ public class PlayerSelector : MonoBehaviour
             }
         }
 
-        if (isPressed && !GetAxisHold("Horizontal"))
-        {
-            isPressed = false;
-        }
-
         if (TransitionManager.instance.IsReadyToNextSceneNow() && isStartingGame)
         {
             SceneManager.LoadScene(mainSceneName);
         }
     }
 
-    bool GetAxisHold(string name)
+    private bool _isSubmitted()
     {
-        return Input.GetAxis(name) > AXIS_THRESHOLD || Input.GetAxis(name) < -AXIS_THRESHOLD;
+        float _thres = 0.1f;
+        return _actionSubmit.ReadValue<float>() > 1f - _thres;
     }
 
-    bool GetAxisDown(string name, bool isPositive)
-    {
-        if (isPressed) return false;
-        bool _res = false;
-        if (isPositive ? Input.GetAxis(name) > AXIS_THRESHOLD : Input.GetAxis(name) < -AXIS_THRESHOLD)
-        {
-            isPressed = true;
-            _res = true;
-        }
-        return _res;
-    }
 
     void changeCharacter(bool isNext)
     {
