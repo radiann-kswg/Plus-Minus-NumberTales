@@ -665,7 +665,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'version: 1.2.0
+  m_Text: 'version: 1.2.1
 
     Characters: Radian_N
 
@@ -898,39 +898,6 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Action
       m_Flags: 8
-    m_Flags: 0
-  _actionSubmit:
-    m_Name: Action Submit
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: 15aae59a-99d5-4496-9107-b343e3e84a4f
-    m_Processors: 
-    m_Interactions: Press
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 5d73f597-c8cd-4086-ba75-148a28168da0
-      m_Path: <Keyboard>/enter
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Submit
-      m_Flags: 0
-    - m_Name: 
-      m_Id: f5213386-1a55-4ef7-bd51-9d8062ee26c6
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Submit
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 22995bd4-6b97-4e84-ac37-7ade0742042b
-      m_Path: <Keyboard>/numpadEnter
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Submit
-      m_Flags: 0
     m_Flags: 0
 --- !u!850595691 &1426291636
 LightingSettings:
