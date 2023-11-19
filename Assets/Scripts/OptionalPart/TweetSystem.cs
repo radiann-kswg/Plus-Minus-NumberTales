@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Web;
 // https://sirohood.exp.jp/20191002-2908/
@@ -21,6 +22,38 @@ public class TweetSystem : MonoBehaviour
 
     string url;//QRコード化したいURL
 
+    [SerializeField]
+    private InputAction _action;
+
+    private void OnEnable()
+    {
+        _action.performed += OnPerformedCommand;
+
+        _action?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _action.performed -= OnPerformedCommand;
+
+        _action?.Disable();
+    }
+
+    private void OnPerformedCommand(InputAction.CallbackContext context)
+    {
+        if (TransitionManager.instance.IsTransitionAnimating())
+            return;
+
+
+        if (_action.ReadValue<float>() > 0.9f)
+        {
+            qRcodeSprite_Tweet.gameObject.SetActive(false);
+            qRcodeSprite_Misskey.gameObject.SetActive(true);
+            return;
+        }
+        qRcodeSprite_Tweet.gameObject.SetActive(true);
+        qRcodeSprite_Misskey.gameObject.SetActive(false);
+    }
     public void TweetResult(int characterId, int score, int level = 0)
     {
         /* X/Twitter */
@@ -54,7 +87,7 @@ public class TweetSystem : MonoBehaviour
 
         //https://docs.unity3d.com/2018.4/Documentation/ScriptReference/Texture2D.SetPixels32.html
         //ピクセルカラーのブロックを設定
-        _encodedQRTextire.SetPixels32(color32_tweet);
+        _encodedQRTextire.SetPixels32(color32_misskey);
 
         //https://docs.unity3d.com/ja/2017.4/ScriptReference/Texture2D.Apply.html
         //エンコードで取得した情報で変更を適用する
@@ -73,7 +106,7 @@ public class TweetSystem : MonoBehaviour
         string query = 
             "url=" +
             HttpUtility.UrlEncode("https://unityroom.com/games/plus-minus-numbertales") +
-            "&text= " + 
+            "&text=" + 
             HttpUtility.UrlEncode(
                 "「" +
                 characterName[characterId] +
@@ -94,16 +127,16 @@ public class TweetSystem : MonoBehaviour
         var url = "https://misskeyshare.link/share.html?";
 
         string query =
-            "text= " +
+            "url=" +
+            HttpUtility.UrlEncode("https://unityroom.com/games/plus-minus-numbertales") +
+            "&text=" +
             HttpUtility.UrlEncode(
                 "「" +
                 characterName[characterId] +
                 "」とゲームに挑み、" + scoreStr +
                 "を獲得した!!"
-                ) +
-            HttpUtility.UrlEncode("%0A%0A#ナンバーテールズの主人より%20#SanukiXGame%0A")+
-                HttpUtility.UrlEncode("&url = URL") +
-            HttpUtility.UrlEncode("https://unityroom.com/games/plus-minus-numbertales") ;
+                )  + "%0A" +
+            HttpUtility.UrlEncode("#ナンバーテールズの主人より #SanukiXGame");
 
         return url + query;
     }

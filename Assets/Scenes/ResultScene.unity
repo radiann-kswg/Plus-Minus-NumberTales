@@ -365,8 +365,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -60, y: 100}
-  m_SizeDelta: {x: 250, y: 250}
+  m_AnchoredPosition: {x: -100, y: 50}
+  m_SizeDelta: {x: 350, y: 350}
   m_Pivot: {x: 1, y: 0}
 --- !u!1001 &189269356
 PrefabInstance:
@@ -1249,7 +1249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1476588905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,8 +1305,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -350, y: 100}
-  m_SizeDelta: {x: 250, y: 250}
+  m_AnchoredPosition: {x: -100, y: 50}
+  m_SizeDelta: {x: 350, y: 350}
   m_Pivot: {x: 1, y: 0}
 --- !u!1 &1522552352
 GameObject:
@@ -1628,6 +1628,127 @@ MonoBehaviour:
   - "9(\u30C1\u30AB)"
   qRcodeSprite_Tweet: {fileID: 188848646}
   qRcodeSprite_Misskey: {fileID: 1476588905}
+  _action:
+    m_Name: Action
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 093dba66-1594-44e3-91af-6030cb2f3b67
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 1D Axis
+      m_Id: b86f8c65-575f-4e58-ae19-99a63dc54e03
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: fa9f5a30-1e7b-45c5-a706-2eef2b6a2540
+      m_Path: <Keyboard>/leftArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 87e254dc-76f4-4ebd-aff2-ab818353136c
+      m_Path: <Keyboard>/rightArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 1D Axis
+      m_Id: b5785e22-8215-45bb-98d1-eaa04ba1ca01
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: c2004ab1-e574-45d0-9a71-cc0ef67785cc
+      m_Path: <Keyboard>/t
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 6f882f86-2502-4f4d-b6fb-c572bbab5bed
+      m_Path: <Keyboard>/m
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 1D Axis
+      m_Id: cf13fe23-6e7a-42a1-a03a-4b13077b5f76
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: 1a3829e6-91f4-44e0-bf13-34dac0b478eb
+      m_Path: <Keyboard>/numpad4
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 98445b9c-5a46-4ea1-acad-9140f4648437
+      m_Path: <Keyboard>/numpad6
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 1D Axis
+      m_Id: 996f2632-eace-4b33-83dd-6524a193f47e
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: f2db5e8c-c278-4b46-9489-dfd0436559ae
+      m_Path: <Keyboard>/4
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: f508f893-0ef5-43b4-86dd-647fba7afaef
+      m_Path: <Keyboard>/6
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 1D Axis
+      m_Id: 6e272218-5199-4d33-871e-50b55212d3c6
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: 10aae4ac-aec6-406f-84e9-635595dc456b
+      m_Path: <Keyboard>/x
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    m_Flags: 0
 --- !u!1 &2114551064
 GameObject:
   m_ObjectHideFlags: 0
