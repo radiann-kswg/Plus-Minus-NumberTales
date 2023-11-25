@@ -276,6 +276,22 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Action Submit
       m_Flags: 0
+    - m_Name: 
+      m_Id: d76ae520-0bb2-4b6e-b3b7-8c8be08ad193
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 9c6c5ca9-7cac-42d0-88a5-9b5f5020672a
+      m_Path: <XInputController>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
     m_Flags: 0
 --- !u!4 &181575917
 Transform:
@@ -1733,6 +1749,86 @@ MonoBehaviour:
       m_Action: Action
       m_Flags: 8
     - m_Name: 1D Axis
+      m_Id: b23c56ad-85b7-402b-b6e4-45abb1e6fc68
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: 0f68fe28-49e8-48a6-a566-6158a23884c6
+      m_Path: <Gamepad>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: d40160d4-a30f-4c56-8978-cff98691ed21
+      m_Path: <Gamepad>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: negative
+      m_Id: eaaa3688-8f03-47bb-8678-1f9b51ab1cc1
+      m_Path: <XInputController>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 9d5c9fdf-c884-45ad-a79c-0cc3ede21cfb
+      m_Path: <XInputController>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 1D Axis
+      m_Id: f9027634-13c1-47e1-a8ad-8cf489c924f8
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: 8c290143-f85b-4b0a-b1e2-9f0b18e6d4f5
+      m_Path: <Gamepad>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 2a930df4-99a3-4f15-a542-5f550ad28023
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: negative
+      m_Id: c8269970-36f2-466e-868c-39c98a66696a
+      m_Path: <XInputController>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: 1d781c87-9053-4efa-a776-d01255cf3357
+      m_Path: <XInputController>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 1D Axis
       m_Id: 6e272218-5199-4d33-871e-50b55212d3c6
       m_Path: 1DAxis
       m_Interactions: 
@@ -1743,6 +1839,30 @@ MonoBehaviour:
     - m_Name: negative
       m_Id: 10aae4ac-aec6-406f-84e9-635595dc456b
       m_Path: <Keyboard>/x
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 1D Axis
+      m_Id: 495bec63-f1bd-4e1d-864e-0c9b7f9f3981
+      m_Path: 1DAxis
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: negative
+      m_Id: cc2f4b24-9094-4306-b5cb-f5c0ff261b15
+      m_Path: <XInputController>/buttonWest
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: positive
+      m_Id: d0922924-4fed-4b94-bab0-a639aada8a27
+      m_Path: <XInputController>/buttonEast
       m_Interactions: 
       m_Processors: 
       m_Groups: 

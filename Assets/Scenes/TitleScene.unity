@@ -982,6 +982,86 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Action
       m_Flags: 8
+    - m_Name: 2D Vector
+      m_Id: deb5539a-1030-4c83-bf8e-7b5e3ae006d5
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 899865d2-2105-4fe0-9745-498926ccd03d
+      m_Path: <Gamepad>/dpad/up
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 418eeeed-b072-4cde-a38d-97e750ce839e
+      m_Path: <Gamepad>/dpad/down
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: left
+      m_Id: df5db97a-d359-43e2-8ea8-48a86bb7779d
+      m_Path: <Gamepad>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: right
+      m_Id: fa3a6d63-cd1c-41a2-8f89-079822ac5deb
+      m_Path: <Gamepad>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 2D Vector
+      m_Id: d18773e7-321a-451f-b4d7-b5fc3ea4ce14
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: up
+      m_Id: c1ab33eb-d146-4e4e-92d5-a3f782e1243d
+      m_Path: <XInputController>/dpad/up
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 580509b3-b993-457f-9a66-13c49b6fc0e9
+      m_Path: <XInputController>/dpad/down
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 112c5557-9063-4dca-a70f-40b98de2f5e9
+      m_Path: <XInputController>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 75d8fc40-1b5b-47ee-8eb5-cd31ae8e0952
+      m_Path: <XInputController>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
     m_Flags: 0
 --- !u!850595691 &1426291636
 LightingSettings:
