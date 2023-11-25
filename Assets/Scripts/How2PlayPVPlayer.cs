@@ -32,7 +32,7 @@ public class How2PlayPVPlayer : MonoBehaviour
             {
                 alpha = 0.0f;
                 setBlackImageAlpha();
-                _backImage.gameObject.SetActive(false);
+                //_backImage.gameObject.SetActive(false);
                 _player.gameObject.SetActive(false);
                 isFadingIn = false;
             }
@@ -59,7 +59,7 @@ public class How2PlayPVPlayer : MonoBehaviour
         if (isFadeIn) isFadingIn = true;
         else
         {
-            _backImage.gameObject.SetActive(true);
+            //_backImage.gameObject.SetActive(true);
             isFadingOut = true;
         }
     }
@@ -78,7 +78,7 @@ public class How2PlayPVPlayer : MonoBehaviour
 
     private IEnumerator _WaitPlaying()
     {
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(2.0f);
         StartCoroutine(_PlayPV());
     }
 
