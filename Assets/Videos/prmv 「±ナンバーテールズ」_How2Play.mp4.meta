@@ -15,7 +15,7 @@ VideoClipImporter:
   targetSettings:
     0:
       enableTranscoding: 1
-      codec: 1
+      codec: 2
       resizeFormat: 7
       aspectRatio: 0
       customWidth: 960
@@ -24,7 +24,7 @@ VideoClipImporter:
       spatialQuality: 2
     1:
       enableTranscoding: 1
-      codec: 1
+      codec: 2
       resizeFormat: 7
       aspectRatio: 0
       customWidth: 960
