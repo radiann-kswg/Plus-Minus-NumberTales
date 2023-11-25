@@ -344,8 +344,7 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 0.1
-  m_Url: "file://C:/Users/s-chi/Documents/Unity UserFile/Plus-Minus-NumberTales/Assets/Videos/prmv
-    \u300C\xB1\u30CA\u30F3\u30D0\u30FC\u30C6\u30FC\u30EB\u30BA\u300D_How2Play.mp4"
+  m_Url: http://www.numbertales-radiann.com/drive/game_prmv.mp4
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
@@ -1384,7 +1383,7 @@ MonoBehaviour:
   _backImage: {fileID: 1650986447}
   _player: {fileID: 501404468}
   alpha: 0
-  pvWaitTime: 3
+  pvWaitTime: 30
 --- !u!4 &2070961878
 Transform:
   m_ObjectHideFlags: 0
