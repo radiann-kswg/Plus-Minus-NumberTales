@@ -12,14 +12,23 @@ public class How2PlayPVPlayer : MonoBehaviour
     [SerializeField]
     private VideoPlayer _player;
 
+    [SerializeField]
     float alpha = 0.0f;
     bool isFadingIn = false, isFadingOut = false;
 
-    private void setBlackImageAlpha()
+    [SerializeField]
+    private float pvWaitTime = 10.0f;
+
+    private void setAlpha()
     {
-        if (_backImage)
+        if(_backImage)
         {
             _backImage.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+        }
+        
+        if(_player)
+        {
+            _player.targetCameraAlpha = alpha;
         }
     }
     public bool Set()
@@ -27,13 +36,11 @@ public class How2PlayPVPlayer : MonoBehaviour
         if (isFadingIn)
         {
             alpha -= Time.deltaTime;
-            if (alpha > 0.0f) setBlackImageAlpha();
+            if (alpha > 0.0f) setAlpha();
             else
             {
                 alpha = 0.0f;
-                setBlackImageAlpha();
-                //_backImage.gameObject.SetActive(false);
-                _player.gameObject.SetActive(false);
+                setAlpha();
                 isFadingIn = false;
             }
             return true;
@@ -41,12 +48,11 @@ public class How2PlayPVPlayer : MonoBehaviour
         if (isFadingOut)
         {
             alpha += Time.deltaTime;
-            if (alpha < 1.0f) setBlackImageAlpha();
+            if (alpha < 1.0f) setAlpha();
             else
             {
                 alpha = 1.0f;
-                setBlackImageAlpha();
-                _player.gameObject.SetActive(true);
+                setAlpha();
                 isFadingOut = false;
             }
             return true;
@@ -56,10 +62,13 @@ public class How2PlayPVPlayer : MonoBehaviour
 
     public void StartTransition(bool isFadeIn)
     {
-        if (isFadeIn) isFadingIn = true;
+        if (isFadeIn)
+        {
+            isFadingIn = true;
+        }
         else
         {
-            //_backImage.gameObject.SetActive(true);
+            _player.Play();
             isFadingOut = true;
         }
     }
@@ -78,28 +87,27 @@ public class How2PlayPVPlayer : MonoBehaviour
 
     private IEnumerator _WaitPlaying()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(pvWaitTime);
         StartCoroutine(_PlayPV());
     }
 
     private IEnumerator _PlayPV()
     {
         if (!_player || !_backImage) yield break;
-        isFadingOut = true;
+        StartTransition(false);
         while (Set())
         {
             if (TransitionManager.instance.IsTransitionAnimating())
                 yield break;
             yield return new WaitForSeconds(Time.deltaTime);
         }
-        _player.Play();
         while (_player.isPlaying)
         {
             if (TransitionManager.instance.IsTransitionAnimating())
                 yield break;
             yield return null;
         }
-        isFadingIn = true;
+        StartTransition(true);
         while (Set())
         {
             if (TransitionManager.instance.IsTransitionAnimating())
