@@ -343,7 +343,7 @@ VideoPlayer:
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
-  - 1
+  - 0.1
   m_Url: 
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
@@ -806,6 +806,22 @@ MonoBehaviour:
     - m_Name: 
       m_Id: bddd6dba-81b4-4846-8715-e749a996ea04
       m_Path: <Keyboard>/numpadEnter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 859e1582-93b2-4d80-a01b-2036a2d1387e
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Submit
+      m_Flags: 0
+    - m_Name: 
+      m_Id: eea8a6f6-95f2-4839-b0ef-954781ac0f91
+      m_Path: <XInputController>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 
