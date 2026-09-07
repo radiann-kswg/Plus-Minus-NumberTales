@@ -843,7 +843,7 @@ public class GameDirector : MonoBehaviour
                     obj = Instantiate(bubblePrefab[j],
                         new Vector3(Random.Range(-positionXAnp, positionXAnp), positionY, 0.0f), Quaternion.identity);
                     obj.transform.localScale = _randomNum * new Vector3(1.0f, 1.0f, 1.0f);
-                    obj.GetComponent<Rigidbody2D>().velocity = speed * new Vector2(_random_x, _random_y);
+                    obj.GetComponent<Rigidbody2D>().linearVelocity = speed * new Vector2(_random_x, _random_y);
                 }
             }
         }
