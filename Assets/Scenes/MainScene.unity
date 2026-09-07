@@ -2051,6 +2051,38 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Action Switch Left
       m_Flags: 0
+    - m_Name: 
+      m_Id: a9055f6c-5ae9-4da9-9d73-f68bfbf2ac9a
+      m_Path: <Gamepad>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Left
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 624a40ff-9ee6-4cb7-bff4-f09100fca9b3
+      m_Path: <XInputController>/dpad/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Left
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 99b8e318-0d6d-406a-8213-ebff39ccc1a2
+      m_Path: <Gamepad>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Left
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 39c2347d-f3a2-44e5-be1a-511c4a7eb50c
+      m_Path: <XInputController>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Left
+      m_Flags: 0
     m_Flags: 0
   _actionSwitchRight:
     m_Name: Action Switch Right
@@ -2087,6 +2119,38 @@ MonoBehaviour:
     - m_Name: 
       m_Id: ce3a6544-4da2-4e4d-91b5-1640a30e86bd
       m_Path: <Keyboard>/rightArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Right
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 779598aa-85fa-4781-9a6a-a7a0162192e9
+      m_Path: <Gamepad>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Right
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 926ac9e8-bcde-462f-bfae-fb6f4f84b66d
+      m_Path: <XInputController>/dpad/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Right
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 9a0129d0-4016-4def-9de8-f88a29a6b0ef
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Switch Right
+      m_Flags: 0
+    - m_Name: 
+      m_Id: d2e2ad1d-8ad0-4aba-8283-560cdc3fa7c1
+      m_Path: <XInputController>/rightShoulder
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -2144,6 +2208,38 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 716f07d7-f508-4fe4-a843-94fcfdfe2e1b
       m_Path: <Keyboard>/downArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action H Drop
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 5444cc1d-0774-4684-9072-2f3ae8fb9160
+      m_Path: <Gamepad>/dpad/down
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action H Drop
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 1290a6fd-277e-423d-93be-3d89269b7328
+      m_Path: <XInputController>/dpad/down
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action H Drop
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 88f1aac5-3b97-42c3-b575-daac7d062ba2
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action H Drop
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 6e404244-b0b2-4591-a70f-28dc4f1be3f5
+      m_Path: <XInputController>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -2209,6 +2305,38 @@ MonoBehaviour:
     - m_Name: 
       m_Id: e1ce1ff7-d032-4190-a28a-7783a73068a3
       m_Path: <Keyboard>/upArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Hold
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 79a70a4f-f833-49bf-85b1-f66c6092f5bc
+      m_Path: <Gamepad>/dpad/up
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Hold
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 36c66312-e3db-49e9-b593-d89149001d70
+      m_Path: <XInputController>/dpad/up
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Hold
+      m_Flags: 0
+    - m_Name: 
+      m_Id: ec7205a0-1f8f-4110-bcdc-062c40ca4293
+      m_Path: <Gamepad>/buttonNorth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Hold
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 492868f8-cdb1-43f9-95df-1cb40529070a
+      m_Path: <XInputController>/buttonNorth
       m_Interactions: 
       m_Processors: 
       m_Groups: 

@@ -11,6 +11,9 @@ public class MessageReceiver : MonoBehaviour
     [SerializeField]
     Image characterImage;
 
+    [SerializeField]
+    TweetSystem tweet;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +24,18 @@ public class MessageReceiver : MonoBehaviour
         scoreText.text = score.ToString();
         levelText.text = level.ToString();
         characterImage.sprite = Messerger.instance.charactersImage[target];
+
+        _TweetResult();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+    }
+
+    void _TweetResult()
+    {
+        if (tweet)
+            tweet.TweetResult(target, score, level);
     }
 }
