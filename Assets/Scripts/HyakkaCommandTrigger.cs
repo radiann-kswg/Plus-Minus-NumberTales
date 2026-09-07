@@ -35,6 +35,10 @@ public class HyakkaCommandTrigger : MonoBehaviour
             return;
 
 
+        // キーを離した時も performed が値 (0,0) で来て進捗がリセットされるため、離しは判定しない
+        if (context.ReadValue<Vector2>().sqrMagnitude < 0.01f)
+            return;
+
         if (!_isSuccessInputHyakkaCommand && _hyakkaCommandProgress < hyakkaCommandButtonName.Count)
         {
             if (_GudgeHyakkaCommand(_hyakkaCommandProgress))

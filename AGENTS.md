@@ -29,6 +29,9 @@
 - シーン編集・GameObject操作・Console確認は、可能な限り **Unity MCP ツール経由**で行う（`.unity` / `.prefab` の直接テキスト編集より優先）。
 - 接続設定は `.mcp.json`（Claude Code）/ `.vscode/mcp.json`（VS Code）。どちらも Unity 公式リレー `%USERPROFILE%\.unity\relay\relay_win.exe` を使う。他の Unity プロジェクトのエディタは閉じておく。
 - 作業完了前に、MCP経由で **Console のエラー・警告を確認**する（`Unity_ReadConsole`）。
+- Cowork（Linux サンドボックス）から git を書き込まない。`Unity_RunCommand` → `GitTools.RunGit("add -A")` / `GitTools.CommitAll()`（`Assets/Editor/GitTools.cs`、ルート `CLAUDE.md` 2章）。
+- WebGL ビルドは `Tools > PluMi > Build WebGL`（`Assets/Editor/WebGLBuilder.cs`、出力 `Builds/WebGL/`）。unityroom の要件（Gzip・Decompression Fallback オフ）は Player Settings 側で保つ。
+- エディタの Play は無 VSync で 1000fps 超になる。MCP から入力を流し込んで検証するときはフレーム数ではなく実時間で待つ。
 
 ## 4. Git・ファイル運用ルール
 

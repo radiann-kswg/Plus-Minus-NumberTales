@@ -94,6 +94,18 @@ public class How2PlayPVPlayer : MonoBehaviour
     private IEnumerator _PlayPV()
     {
         if (!_player || !_backImage) yield break;
+
+        // WebGL: 操作前の音付き自動再生はブラウザに拒否される（isPlaying が立たない）。
+        // 拒否されたら黒フェードを出さずに次の待機へ回す（ユーザー操作後の回で再生される）。
+        _player.Play();
+        for (float t = 0f; !_player.isPlaying && t < 3f; t += Time.deltaTime) yield return null;
+        if (!_player.isPlaying)
+        {
+            _player.Stop();
+            StartCoroutine(_WaitPlaying());
+            yield break;
+        }
+
         StartTransition(false);
         while (Set())
         {
