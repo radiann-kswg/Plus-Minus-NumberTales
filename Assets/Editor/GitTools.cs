@@ -21,7 +21,7 @@ public static class GitTools
 
         UnityEngine.Debug.Log("[GitTools] add: " + RunGit("add -A"));
         UnityEngine.Debug.Log("[GitTools] commit: " + RunGit(
-            $"-c user.name=Radian -c user.email=snine9801@gmail.com commit -m \"{msg}\""));
+            $"commit -m \"{msg}\""));
         UnityEngine.Debug.Log("[GitTools] log: " + RunGit("log --oneline -3"));
     }
 

@@ -73,7 +73,7 @@ Unity Hub で開き、`TitleScene` を Play。WebGL ビルドは `Tools > PluMi 
 
 ## ライセンス
 
-**CC BY-NC 4.0**（権利者: 百花繚乱研究所 / ラジアン）。全文は [LICENCE](LICENCE)。
+**CC BY-NC 4.0**（権利者: 百花繚乱研究所 / ラジアン）。全文は [LICENSE](LICENSE)。
 創作キャラクターの利用は創作DBサイトのガイドラインに従ってください。
 
 サードパーティ:
